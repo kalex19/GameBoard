@@ -1,7 +1,7 @@
 export default {
 primaryColor: '#2867B2',
 secondaryColor: '#FFF',
-primaryFont: 'Open Sans',
+primaryFont: 'Didot',
 secondaryFont: 'San Sarif',
 container: {
   alignItems: 'center',

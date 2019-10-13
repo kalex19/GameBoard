@@ -1,6 +1,9 @@
-import React from 'react';
-import React from 'react';
-import { createStackNavigator } from 'react-navigation';
+import React, { Component } from 'react';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+import { createStore } from 'redux';
+import rootReducer from './reducers';
+import { Provider } from 'react-redux';
 import HomeScreen from './components/HomeScreen/HomeScreen';
 import GameBoard from './components/GameBoard/GameBoard';
 
