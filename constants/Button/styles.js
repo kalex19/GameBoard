@@ -7,7 +7,7 @@ export default StyleSheet.create({
 	},
 	button: {
 		alignItems: 'center',
-		alignSelf: 'center',
+		alignSelf: 'flex-end',
 		backgroundColor: theme.primaryColor,
 		borderRadius: 100,
 		height: 70,
@@ -17,7 +17,7 @@ export default StyleSheet.create({
 	},
 	buttonText: {
 		color: theme.secondaryColor,
-		fontFamily: theme.primaryFont,
-		fontSize: 20
+		fontFamily: theme.secondaryFont,
+		fontSize: 30
 	}
 });
