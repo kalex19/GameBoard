@@ -12,6 +12,6 @@ export default StyleSheet.create({
 		fontWeight: '900',
 		fontSize: 45,
 		textDecorationLine: 'underline',
-		textDecorationColor: 'maroon'
+		textDecorationColor: 'red'
 	}
 });

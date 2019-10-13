@@ -10,10 +10,10 @@ class HomeScreen extends Component {
 		return (
 			<ImageBackground source={require('../../assets/officeGames.png')} style={styles.backgroundImage}>
 				<View style={theme.container}>
-					<Header accessibilityLabel="Word guessing game called Balloons">BALLOONS</Header>
+					<Header accessibilityLabel="Word guessing game called WordPop">WORDP🎈P</Header>
 				</View>
 				<Button accessibilityLabel="Tap me to play a new game" onPress={() => this.props.navigation.navigate('Game')}>
-					Ready t🎈 Play?
+					Ready to Play?
 				</Button>
 			</ImageBackground>
 		);
