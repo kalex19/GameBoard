@@ -21,18 +21,18 @@ class App extends Component {
 
 const AppNavigator = createStackNavigator(
 	{
-		HomeScreen: {
+		Home: {
 			screen: HomeScreen,
 			navigationOptions: {
 				header: null
 			}
 		},
-		GameBoard: {
+		Game: {
 			screen: GameBoard
 		}
 	},
 	{
-		initialRouteName: 'HomeScreen'
+		initialRouteName: 'Home'
 	}
 );
 
