@@ -2,12 +2,13 @@ import { StyleSheet } from 'react-native';
 import theme from '../../constants/theme';
 
 export const styles = StyleSheet.create({
-	text: {
+	header: {
 		fontFamily: theme.primaryFont,
 		color: theme.primaryColor,
-		fontSize: 30,
-		alignSelf: 'center',
-		flex: 2
+		fontWeight: '900',
+		fontSize: 60,
+		marginBottom: 200,
+		marginTop: 200,
 	},
 	backgroundImage: {
 		flex: 1,

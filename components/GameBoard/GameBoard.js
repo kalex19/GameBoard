@@ -6,11 +6,13 @@ export default function GameBoard() {
 	return (
 		<View style={styles.container}>
 			<Text accessibilityLabel="Word guessing game called Hangman">Hangman</Text>
-			<Image source={require('../../assets/hangman.jpeg')} style={styles.logo} />
-			<Button accessibilityLabel="Tap me to play a new game" onPress={() => props.navigation.navigate('GameBoard')}>
-				Ready to Play?
-			</Button>
+			{/* score human
+			score computer */}
+			{/* balloons with wrong guessed letter in them
+			<Image source={require('../../assets/hangman.jpeg')} style={styles.logo} /> image of man with balloons and each one goes away with wrong guess
+			- - - - - - with letters filled in
+			<Input>A</Input> */}
+			<Button accessibilityLabel="Tap me to submit your letter guess">Take a Guess</Button>
 		</View>
 	);
 }
-

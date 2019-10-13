@@ -7,14 +7,20 @@ import theme from '../../constants/theme';
 export default function HomeScreen() {
 	return (
 		<ImageBackground source={require('../../assets/officeGames.png')} style={styles.backgroundImage}>
-			<View style={theme.container}>
-				<Text accessibilityLabel="Word guessing game called Hangman" style={styles.text}>
-					Hangman
+			<View
+				style={{
+					...theme.container,
+					borderBottomColor: 'maroon',
+					borderBottomWidth: StyleSheet.hairlineWidth
+				}}
+			>
+				<Text accessibilityLabel="Word guessing game called Hangman" style={styles.header}>
+					HANGMAN
 				</Text>
-				<Button accessibilityLabel="Tap me to play a new game" onPress={() => props.navigation.navigate('GameBoard')}>
-					Ready to Play?
-				</Button>
 			</View>
+			<Button accessibilityLabel="Tap me to play a new game" onPress={() => props.navigation.navigate('GameBoard')}>
+				Ready to Play?
+			</Button>
 		</ImageBackground>
 	);
 }

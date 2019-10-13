@@ -1,8 +1,8 @@
 export default {
 	primaryColor: '#2867B2',
 	secondaryColor: '#FFF',
-	primaryFont: 'Didot',
-	secondaryFont: 'Helvetica',
+	primaryFont: 'Helvetica',
+	secondaryFont: 'Didot',
 	container: {
 		alignItems: 'center',
 		justifyContent: 'center',

@@ -7,13 +7,13 @@ export default StyleSheet.create({
 	},
 	button: {
 		alignItems: 'center',
-		alignSelf: 'flex-end',
+		alignSelf: 'center',
 		backgroundColor: theme.primaryColor,
 		borderRadius: 100,
 		height: 70,
 		justifyContent: 'center',
 		margin: 10,
-		width: '85%'
+		width: '75%'
 	},
 	buttonText: {
 		color: theme.secondaryColor,
