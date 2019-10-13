@@ -1,4 +1,4 @@
-export const addWords = words => ({
-	type: 'ADD_WORDS',
+export const loadWords = words => ({
+	type: 'LOAD_WORDS',
 	words
 });
