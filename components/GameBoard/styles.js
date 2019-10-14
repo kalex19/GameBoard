@@ -29,5 +29,22 @@ export const styles = StyleSheet.create({
 	buttonText: {
 		fontFamily: theme.secondaryFont,
 		fontSize: 30
+	},
+	text: {
+		color: theme.primaryColor,
+		fontSize: 20,
+		alignSelf: 'center'
+	},
+	incorrectLettersContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-evenly'
+	},
+	balloonContainer: {
+			flex: 1,
+			flexDirection: 'row',
+			justifyContent: 'center',
+			width: '100%',
+			position: 'absolute',
 	}
 });
