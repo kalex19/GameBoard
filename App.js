@@ -4,8 +4,6 @@ import { createAppContainer } from 'react-navigation';
 import HomeScreen from './components/HomeScreen/HomeScreen';
 import GameBoard from './components/GameBoard/GameBoard';
 
-export const store = createStore(rootReducer);
-
 class App extends Component {
 	render() {
 		return <Navigator />;
@@ -21,7 +19,10 @@ const AppNavigator = createStackNavigator(
 			}
 		},
 		Game: {
-			screen: GameBoard
+			screen: GameBoard,
+			navigationOptions: {
+				header: null
+			}
 		}
 	},
 	{

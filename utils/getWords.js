@@ -3,5 +3,5 @@ export const getWords = async () => {
 	if (!response.ok) {
 		throw new Error('Could not fetch words');
 	}
-	return await response.json();
+	return await response.text();
 };

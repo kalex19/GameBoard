@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { styles } from './styles';
 import theme from '../../constants/theme';
-import { Text, View, TextInput, Button, Modal, TouchableHighlight, Alert } from 'react-native';
+import { Text, View, TextInput, Button, Modal, Image } from 'react-native';
 import { getWords } from '../../utils/getWords';
 import PropTypes from 'prop-types';
 import Header from '../../constants/Header/Header';
@@ -32,6 +32,7 @@ export class GameBoard extends Component {
 
 	fetchWords = async () => {
 		const words = await getWords();
+		// convert from one string to array
 		this.setState({ words });
 	};
 
@@ -46,7 +47,7 @@ export class GameBoard extends Component {
 	};
 
 	correctContainer = () => {
-		const chosenWordArray = chosenWord.split('');
+		const chosenWordArray = this.state.chosenWord.split('');
 		return chosenWordArray.map(letter => {
 			const visibility = chosenWordArray.includes(letter);
 			return <CorrectLetter visible={visibility} letter={letter} />;
