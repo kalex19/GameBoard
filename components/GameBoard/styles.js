@@ -46,5 +46,6 @@ export const styles = StyleSheet.create({
 			justifyContent: 'center',
 			width: '100%',
 			position: 'absolute',
-	}
+	},
+	
 });

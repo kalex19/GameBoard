@@ -4,8 +4,9 @@ import styles from './styles';
 
 const CorrectLetter = props => {
 	return (
-		<View style={styles.container}>
-			<Text style={{ ...styles.letter }}>{props.letter}</Text>
+		<View style={styles.correctContainer} >
+			{/* if props.visible render letter else square w/ bottom border */}
+			<Text style={{ ...styles.letter, ...props.visible }}>{props.letter}</Text>
 		</View>
 	);
 };

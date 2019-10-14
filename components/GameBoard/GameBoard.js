@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { styles } from './styles';
 import theme from '../../constants/theme';
-import { Text, View, TextInput, Button } from 'react-native';
-import { connect } from 'react-redux';
-import { loadWords } from '../../actions';
+import { Text, View, TextInput, Button, Modal, TouchableHighlight, Alert } from 'react-native';
 import { getWords } from '../../utils/getWords';
 import PropTypes from 'prop-types';
 import Header from '../../constants/Header/Header';
 import Score from '../../constants/Score/Score';
+import IncorrectLetter from '../../constants/IncorrectLetter/IncorrectLetter';
+import CorrectLetter from '../../constants/CorrectLetter/CorrectLetter';
 
 export class GameBoard extends Component {
 	state = {
@@ -18,48 +18,39 @@ export class GameBoard extends Component {
 		correctLetters: [],
 		round: 0,
 		computerScore: 0,
-		playerScore: 0
+		playerScore: 0,
+		modalVisible: false,
+		winner: 'lost',
+		error: '',
+		letterVisible: false
 	};
 
-	componentDidMount = async () => {
+	async componentDidMount() {
 		await this.fetchWords();
 		this.pickWord();
-	};
+	}
 
 	fetchWords = async () => {
 		const words = await getWords();
-		this.setState({
-			words
-		});
-		this.props.loadWords(words);
+		this.setState({ words });
 	};
 
 	pickWord = () => {
-		const randomIndex = Math.random() * 100;
+		const randomIndex = Math.floor(Math.random() * this.state.words.length);
 		const chosenWord = this.state.words[randomIndex];
-		this.setState({
-			chosenWord
-		});
+		this.setState({ chosenWord });
 	};
 
 	incorrectContainer = () => {
-		if (incorrectLetters.length) {
-			return incorrectLetters.map(letter => {
-				return <IncorrectLetter letter={letter} />;
-			});
-		} else {
-			return <Text style={styles.text}>Afraid of Loud Noises??</Text>;
-		}
+		return incorrectLetters.map(letter => <IncorrectLetter letter={letter} />);
 	};
 
 	correctContainer = () => {
-		if (chosenWord.length) {
-			return chosenWord.forEach(letter => {
-				return <correctLetter letter={letter} />;
-			});
-		} else {
-			return <Text style={styles.text}>Running low on helium, one moment...</Text>;
-		}
+		const chosenWordArray = chosenWord.split('');
+		return chosenWordArray.map(letter => {
+			const visibility = chosenWordArray.includes(letter);
+			return <CorrectLetter visible={visibility} letter={letter} />;
+		});
 	};
 
 	renderBalloons = () => {
@@ -77,20 +68,54 @@ export class GameBoard extends Component {
 	};
 
 	handleSubmit = () => {
-		console.log(this.state.words);
-		if (this.state.chosenWord.includes(this.state.guessedLetter)) {
-			[...this.state.correctLetters, this.state.guessedLetter];
+		if (!/[a-z]/i.test(this.state.guess)) {
+			this.setState({
+				error: 'Please only use letters. No symbols or numbers'
+			});
 		} else {
-			[...this.state.incorrectLetters, this.state.guessedLetter];
+			this.setState({
+				error: ''
+			});
 		}
+		if (this.state.chosenWord.includes(this.state.guessedLetter)) {
+			this.setState({
+				correctLetters: [...this.state.correctLetters, this.state.guessedLetter]
+			});
+		} else {
+			this.setState({
+				incorrectLetters: [...this.state.incorrectLetters, this.state.guessedLetter]
+			});
+		}
+		// array.every
+		if (this.state.correctLetters.join(',').inlcudes(this.state.chosenWord)) {
+			this.setState({
+				winner: 'won',
+				modalVisible: true,
+				playerScore: playerScore + 1
+			});
+		}
+		if (this.state.incorrectLetters.length === 6) {
+			this.setState({
+				computerScore: computerScore + 1,
+				modalVisible: true
+			});
+		}
+	};
 
-			{/* image of man holding 6 balloons and with a wrong letter guess, balloon flies off page or pops and then incorrect letter appears above, if all 6 balloons are gone show annoucement comp with lose text and add point to comp */}
-				{/* for each letter in word show _ once letter is guessed correctly, show letter, if all letters are showing show announcement comp, add point, and change announcement text */}
-				{/* if all baloons are hidden or all letters are showing, show popup with play again button (on press pick new random word, add back balloons, render new correct letter comp, clear all incorrect letter comp) 
-					on pop up if all letters are showing say you won else say you lost aka Announcement component - need to account for inputs that are not letters */}
+	resetGame = () => {
+		this.pickWord();
+		this.setState({
+			incorrectLetters: [],
+			correctLetters: [],
+			modalVisible: false,
+			round: this.state.round + 1
+		});
 	};
 
 	render() {
+		const { incorrectLetters } = this.state;
+		const lettersToRender = incorrectLetters.length ? this.incorrectContainer() : <Text>Not enough helium</Text>;
+
 		return (
 			<View style={theme.container}>
 				<View style={styles.containerFlex}>
@@ -98,11 +123,11 @@ export class GameBoard extends Component {
 					<Header accessibilityLabel="Word guessing game called Wordpop" style={{ fontSize: 30 }}>
 						WORDP🎈P
 					</Header>
+					<Text>{this.state.round}</Text>
 					<Score player="CPU" score={this.state.computerScore} />
 				</View>
-				<View style={styles.incorrectLettersContainer}>{this.incorrectContainer()}</View>
-				<View style={styles.balloonContainer} />
-				{this.renderBalloons()}
+				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
+				<View style={styles.balloonContainer}>{this.renderBalloons()}</View>
 				<Image source={require('../../assets/stickman.png')} />
 				<View>{this.correctContainer()}</View>
 				<View style={styles.containerFlex}>
@@ -122,6 +147,33 @@ export class GameBoard extends Component {
 							accessibilityLabel="Tap me to submit your letter guess"
 							onPress={this.handleSubmit}
 						/>
+						<Text style={styles.text}>{this.state.error}</Text>
+					</View>
+					<View style={{ marginTop: 22 }}>
+						<Modal
+							animationType="slide"
+							transparent={false}
+							visible={this.state.modalVisible}
+							// onRequestClose={() => {
+							// 	Alert.alert('Modal has been closed.');
+							// }}
+						>
+							<View style={{ marginTop: 22 }}>
+								<View>
+									<Text>You {this.state.winner}!</Text>
+									{/* change to t/f and cr */}
+									<View style={styles.button}>
+										<Button
+											title="Play Again"
+											color={theme.secondaryColor}
+											style={styles.buttonText}
+											accessibilityLabel="Play a new game"
+											onPress={this.resetGame}
+										/>
+									</View>
+								</View>
+							</View>
+						</Modal>
 					</View>
 				</View>
 			</View>
@@ -129,15 +181,7 @@ export class GameBoard extends Component {
 	}
 }
 
-export const mapStateToProps = state => ({
-	words: state.words
-});
-
-export const mapDispatchToProps = dispatch => ({
-	loadWords: words => dispatch(loadWords(words))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);
+export default GameBoard;
 
 GameBoard.propTypes = {
 	words: PropTypes.array
