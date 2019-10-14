@@ -9,27 +9,25 @@ export const styles = StyleSheet.create({
 		marginTop: 20
 	},
 	inputStyle: {
-		width: '50%',
+		width: '60%',
 		height: '20%',
 		backgroundColor: theme.secondaryColor,
 		borderColor: theme.primaryColor,
 		borderWidth: 5,
 		color: theme.primaryColor,
-		fontSize: 20
+		fontSize: 20,
+		paddingLeft: 5
 	},
 	button: {
-		alignItems: 'center',
-		alignSelf: 'center',
 		backgroundColor: theme.primaryColor,
 		borderRadius: 100,
 		height: '20%',
-		justifyContent: 'center',
-		margin: 10,
+		margin: 5,
+		justifyContent: 'flex-end',
 		width: '30%'
 	},
 	buttonText: {
-		color: theme.secondaryColor,
 		fontFamily: theme.secondaryFont,
-		fontSize: 20
+		fontSize: 30
 	}
 });

@@ -23,6 +23,7 @@ export class GameBoard extends Component {
 
 	componentDidMount = async () => {
 		await this.fetchWords();
+		this.pickWord()
 	};
 
 	fetchWords = async () => {
@@ -33,13 +34,23 @@ export class GameBoard extends Component {
 		this.props.loadWords(words);
 	};
 
+	pickWord = () => {
+		const randomIndex = Math.random() * 100
+		const chosenWord = this.state.words[randomIndex]
+		this.setState({
+			chosenWord
+		})
+	}
+
 	handleChange = (name, value) => {
 		this.setState({
 			[name]: value
 		});
 	};
 
-	handleSubmit = () => {};
+	handleSubmit = () => {
+		console.log(this.state.words);
+	};
 
 	render() {
 		return (
@@ -63,18 +74,20 @@ export class GameBoard extends Component {
 						style={styles.inputStyle}
 						onChangeText={value => this.handleChange('guess', value)}
 						value={this.state.guess}
+						maxLength={1}
 					/>
 					<View style={styles.button}>
 						<Button
-							title="Enter"
-							style={{ ...styles.buttonText, color: 'white' }}
+							title="ENTER"
+							color={theme.secondaryColor}
+							style={styles.buttonText}
 							accessibilityLabel="Tap me to submit your letter guess"
 							onPress={this.handleSubmit}
 						/>
 					</View>
 				</View>
 				{/* if all baloons are hidden or all letters are showing, show popup with play again button (on press pick new random word, add back balloons, render new correct letter comp, clear all incorrect letter comp) 
-					on pop up if all letters are showing say you won else say you lost aka Announcement component */}
+					on pop up if all letters are showing say you won else say you lost aka Announcement component - need to account for inputs that are not letters */}
 			</View>
 		);
 	}
