@@ -41,11 +41,15 @@ export const styles = StyleSheet.create({
 		justifyContent: 'space-evenly'
 	},
 	balloonContainer: {
-			flex: 1,
-			flexDirection: 'row',
-			justifyContent: 'center',
-			width: '100%',
-			position: 'absolute',
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		width: '100%'
 	},
-	
+	correctLettersContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		width: '100%'
+	}
 });

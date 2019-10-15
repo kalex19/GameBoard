@@ -13,16 +13,18 @@ export class GameBoard extends Component {
 	state = {
 		words: [],
 		chosenWord: '',
-		guessedLetter: '',
+		// can be an array?
+		guess: '',
 		incorrectLetters: [],
+		// can be one array
 		correctLetters: [],
+		guessedLetters: [],
 		round: 0,
 		computerScore: 0,
 		playerScore: 0,
 		modalVisible: false,
 		winner: 'lost',
-		error: '',
-		letterVisible: false
+		error: ''
 	};
 
 	async componentDidMount() {
@@ -31,25 +33,29 @@ export class GameBoard extends Component {
 	}
 
 	fetchWords = async () => {
-		const words = await getWords();
-		// convert from one string to array
+		const wordString = await getWords();
+		const words = wordString.split('\n');
 		this.setState({ words });
 	};
 
 	pickWord = () => {
 		const randomIndex = Math.floor(Math.random() * this.state.words.length);
 		const chosenWord = this.state.words[randomIndex];
+		console.log(chosenWord);
 		this.setState({ chosenWord });
 	};
 
 	incorrectContainer = () => {
+		const { guessedLetters, chosenWord } = this.state;
+		const incorrectLetters = !guessedLetters.filter(letter => chosenWord.includes(letter));
 		return incorrectLetters.map(letter => <IncorrectLetter letter={letter} />);
 	};
 
 	correctContainer = () => {
 		const chosenWordArray = this.state.chosenWord.split('');
+		console.log(this.state.correctLetters);
 		return chosenWordArray.map(letter => {
-			const visibility = chosenWordArray.includes(letter);
+			const visibility = this.state.correctLetters.includes(letter);
 			return <CorrectLetter visible={visibility} letter={letter} />;
 		});
 	};
@@ -62,6 +68,7 @@ export class GameBoard extends Component {
 		return <View>{balloons}</View>;
 	};
 
+	// todo delete
 	handleChange = (name, value) => {
 		this.setState({
 			[name]: value
@@ -71,31 +78,29 @@ export class GameBoard extends Component {
 	handleSubmit = () => {
 		if (!/[a-z]/i.test(this.state.guess)) {
 			this.setState({
-				error: 'Please only use letters. No symbols or numbers'
+				error: 'Please only use letters. No symbols or numbers.'
 			});
 		} else {
-			this.setState({
-				error: ''
-			});
+			this.setState(
+				{
+					error: '',
+					guessedLetters: [...this.state.guessedLetters, this.state.guess],
+					guess: ''
+				},
+				() => this.checkGameStatus()
+			);
 		}
-		if (this.state.chosenWord.includes(this.state.guessedLetter)) {
-			this.setState({
-				correctLetters: [...this.state.correctLetters, this.state.guessedLetter]
-			});
-		} else {
-			this.setState({
-				incorrectLetters: [...this.state.incorrectLetters, this.state.guessedLetter]
-			});
-		}
-		// array.every
-		if (this.state.correctLetters.join(',').inlcudes(this.state.chosenWord)) {
+	};
+
+	checkGameStatus = () => {
+		const splitChosenWord = this.state.chosenWord.split('');
+		if (splitChosenWord.every(letter => this.state.correctLetters.includes(letter))) {
 			this.setState({
 				winner: 'won',
 				modalVisible: true,
 				playerScore: playerScore + 1
 			});
-		}
-		if (this.state.incorrectLetters.length === 6) {
+		} else if (this.state.incorrectLetters.length === 6) {
 			this.setState({
 				computerScore: computerScore + 1,
 				modalVisible: true
@@ -130,14 +135,14 @@ export class GameBoard extends Component {
 				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
 				<View style={styles.balloonContainer}>{this.renderBalloons()}</View>
 				<Image source={require('../../assets/stickman.png')} />
-				<View>{this.correctContainer()}</View>
+				<View style={styles.correctLettersContainer}>{this.correctContainer()}</View>
 				<View style={styles.containerFlex}>
 					<TextInput
 						accessibilityLabel="Type your guess here. A guess is one letter"
 						placeholder="What's your guess?"
 						style={styles.inputStyle}
-						onChangeText={value => this.handleChange('guessedLetter', value)}
-						value={this.state.guessedLetter}
+						onChangeText={value => this.handleChange('guess', value)}
+						value={this.state.guess}
 						maxLength={1}
 					/>
 					<View style={styles.button}>
