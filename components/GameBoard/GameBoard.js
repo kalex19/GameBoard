@@ -13,13 +13,9 @@ export class GameBoard extends Component {
 	state = {
 		words: [],
 		chosenWord: '',
-		// can be an array?
-		guess: '',
-		incorrectLetters: [],
-		// can be one array
-		correctLetters: [],
-		guessedLetters: [],
-		round: 0,
+		currentGuess: '',
+		guesses: [],
+		round: 1,
 		computerScore: 0,
 		playerScore: 0,
 		gameOver: false,
@@ -52,7 +48,7 @@ export class GameBoard extends Component {
 	correctContainer = () => {
 		const chosenWordArray = this.state.chosenWord.split('');
 		return chosenWordArray.map(letter => {
-			const visibility = this.state.guessedLetters.includes(letter);
+			const visibility = this.state.guesses.includes(letter);
 			return <CorrectLetter visible={visibility} letter={letter} />;
 		});
 	};
@@ -63,20 +59,47 @@ export class GameBoard extends Component {
 		for (let i = 0; i < 6 - incorrectLetters.length; i++) {
 			balloons.push(<Text>🎈</Text>);
 		}
-		return <View>{balloons}</View>;
+		return <View style={styles.balloonContainer}>{balloons}</View>;
 	};
 
 	handleSubmit = () => {
-		if (!/[a-z]/i.test(this.state.guess)) {
+		if (!/[a-z]+/i.test(this.state.currentGuess)) {
 			this.setState({
-				error: 'Please only use letters. No symbols or numbers.'
+				error: 'Please only use letters. No symbols or numbers.',
+				guess: ''
+			});
+		} else if (this.state.currentGuess.length === 1) {
+			this.handleLetterSubmit();
+		} else {
+			this.handleWordSubmit();
+		}
+	};
+
+	handleLetterSubmit = () => {
+		if (this.state.guesses.includes(this.state.currentGuess.toLowerCase())) {
+			this.setState({
+				error: 'Already guessed this letter. Please guess again.',
+				currentGuess: ''
 			});
 		} else {
 			this.setState(
 				{
 					error: '',
-					guessedLetters: [...this.state.guessedLetters, this.state.guess.toLowerCase()],
-					guess: ''
+					guesses: [...this.state.guesses, this.state.currentGuess.toLowerCase()],
+					currentGuess: ''
+				},
+				() => this.checkGameStatus()
+			);
+		}
+	};
+
+	handleWordSubmit = () => {
+		if (this.state.currentGuess.toLowerCase() === this.state.chosenWord) {
+			this.setState(
+				{
+					error: '',
+					guesses: [...this.state.guesses, this.state.currentGuess.toLowerCase()],
+					currentGuess: ''
 				},
 				() => this.checkGameStatus()
 			);
@@ -86,31 +109,39 @@ export class GameBoard extends Component {
 	checkGameStatus = () => {
 		const splitChosenWord = this.state.chosenWord.split('');
 		const incorrectLetters = this.getIncorrectLetters();
-		if (splitChosenWord.every(letter => this.state.guessedLetters.includes(letter))) {
+		if(this.state.guesses.includes(this.state.chosenWord) || splitChosenWord.every(letter => this.state.guesses.includes(letter))) {
 			this.setState({
 				gameOver: true,
-				playerScore: playerScore + 1
+				playerScore: this.state.playerScore + 1
 			});
 		} else if (incorrectLetters.length === 6) {
 			this.setState({
-				computerScore: computerScore + 1,
+				computerScore: this.state.computerScore + 1,
 				gameOver: true
 			});
 		}
 	};
 
+	setWinnerText = () => {
+		const incorrectLetters = this.getIncorrectLetters();
+		if (incorrectLetters.length === 6) {
+			return 'You Lost!';
+		}
+		return 'You Won!';
+	};
+
 	resetGame = () => {
 		this.pickWord();
 		this.setState({
-			guessedLetters: [],
+			guesses: [],
 			gameOver: false,
 			round: this.state.round + 1
 		});
 	};
 
 	getIncorrectLetters = () => {
-		const { guessedLetters, chosenWord } = this.state;
-		return guessedLetters.filter(letter => !chosenWord.includes(letter));
+		const { guesses, chosenWord } = this.state;
+		return guesses.filter(letter => !chosenWord.includes(letter));
 	};
 
 	render() {
@@ -136,9 +167,9 @@ export class GameBoard extends Component {
 						accessibilityLabel="Type your guess here. A guess is one letter"
 						placeholder="What's your guess?"
 						style={styles.inputStyle}
-						onChangeText={value => this.setState({ guess: value })}
-						value={this.state.guess}
-						maxLength={1}
+						onChangeText={value => this.setState({ currentGuess: value })}
+						value={this.state.currentGuess}
+						maxLength={this.state.chosenWord.length}
 					/>
 					<View style={styles.button}>
 						<Button
@@ -161,8 +192,7 @@ export class GameBoard extends Component {
 						>
 							<View style={{ marginTop: 22 }}>
 								<View>
-									{/* <Text>You {this.state.winner}!</Text> */}
-									{/* change to t/f and cr */}
+									<Text>{this.setWinnerText()}</Text>
 									<View style={styles.button}>
 										<Button
 											title="Play Again"

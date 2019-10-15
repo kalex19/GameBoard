@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
 	button: {
 		backgroundColor: theme.primaryColor,
 		borderRadius: 100,
-		height: '20%',
+		height: '30%',
 		margin: 5,
 		justifyContent: 'flex-end',
 		width: '30%'
@@ -38,18 +38,21 @@ export const styles = StyleSheet.create({
 	incorrectLettersContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		justifyContent: 'space-evenly'
+		justifyContent: 'space-evenly',
+		height: 30
 	},
 	balloonContainer: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		width: '100%'
+		width: '100%',
+		height: 40
 	},
 	correctLettersContainer: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		width: '100%'
+		width: '100%',
+		height: 30
 	}
 });
