@@ -22,8 +22,7 @@ export class GameBoard extends Component {
 		round: 0,
 		computerScore: 0,
 		playerScore: 0,
-		modalVisible: false,
-		winner: 'lost',
+		gameOver: false,
 		error: ''
 	};
 
@@ -46,8 +45,7 @@ export class GameBoard extends Component {
 	};
 
 	incorrectContainer = () => {
-		const { guessedLetters, chosenWord } = this.state;
-		const incorrectLetters = !guessedLetters.filter(letter => chosenWord.includes(letter));
+		const incorrectLetters = this.getIncorrectLetters();
 		return incorrectLetters.map(letter => <IncorrectLetter letter={letter} />);
 	};
 
@@ -61,9 +59,8 @@ export class GameBoard extends Component {
 
 	renderBalloons = () => {
 		const balloons = [];
-		// redundant - extract to function
-		const incorrectLetters = !guessedLetters.filter(letter => chosenWord.includes(letter));
-		for (let i = 0; i < 6 - this.state.incorrectLetters.length; i++) {
+		const incorrectLetters = this.getIncorrectLetters();
+		for (let i = 0; i < 6 - incorrectLetters.length; i++) {
 			balloons.push(<Text>🎈</Text>);
 		}
 		return <View>{balloons}</View>;
@@ -78,7 +75,7 @@ export class GameBoard extends Component {
 			this.setState(
 				{
 					error: '',
-					guessedLetters: [...this.state.guessedLetters, this.state.guess],
+					guessedLetters: [...this.state.guessedLetters, this.state.guess.toLowerCase()],
 					guess: ''
 				},
 				() => this.checkGameStatus()
@@ -88,16 +85,16 @@ export class GameBoard extends Component {
 
 	checkGameStatus = () => {
 		const splitChosenWord = this.state.chosenWord.split('');
-		if (splitChosenWord.every(letter => this.state.correctLetters.includes(letter))) {
+		const incorrectLetters = this.getIncorrectLetters();
+		if (splitChosenWord.every(letter => this.state.guessedLetters.includes(letter))) {
 			this.setState({
-				winner: 'won',
-				modalVisible: true,
+				gameOver: true,
 				playerScore: playerScore + 1
 			});
-		} else if (this.state.incorrectLetters.length === 6) {
+		} else if (incorrectLetters.length === 6) {
 			this.setState({
 				computerScore: computerScore + 1,
-				modalVisible: true
+				gameOver: true
 			});
 		}
 	};
@@ -105,15 +102,19 @@ export class GameBoard extends Component {
 	resetGame = () => {
 		this.pickWord();
 		this.setState({
-			incorrectLetters: [],
-			correctLetters: [],
-			modalVisible: false,
+			guessedLetters: [],
+			gameOver: false,
 			round: this.state.round + 1
 		});
 	};
 
+	getIncorrectLetters = () => {
+		const { guessedLetters, chosenWord } = this.state;
+		return guessedLetters.filter(letter => !chosenWord.includes(letter));
+	};
+
 	render() {
-		const { incorrectLetters } = this.state;
+		const incorrectLetters = this.getIncorrectLetters();
 		const lettersToRender = incorrectLetters.length ? this.incorrectContainer() : <Text>Not enough helium</Text>;
 
 		return (
@@ -135,7 +136,7 @@ export class GameBoard extends Component {
 						accessibilityLabel="Type your guess here. A guess is one letter"
 						placeholder="What's your guess?"
 						style={styles.inputStyle}
-						onChangeText={value => this.setState({guess: value})}
+						onChangeText={value => this.setState({ guess: value })}
 						value={this.state.guess}
 						maxLength={1}
 					/>
@@ -153,14 +154,14 @@ export class GameBoard extends Component {
 						<Modal
 							animationType="slide"
 							transparent={false}
-							visible={this.state.modalVisible}
+							visible={this.state.gameOver}
 							// onRequestClose={() => {
 							// 	Alert.alert('Modal has been closed.');
 							// }}
 						>
 							<View style={{ marginTop: 22 }}>
 								<View>
-									<Text>You {this.state.winner}!</Text>
+									{/* <Text>You {this.state.winner}!</Text> */}
 									{/* change to t/f and cr */}
 									<View style={styles.button}>
 										<Button
