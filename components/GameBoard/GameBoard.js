@@ -53,26 +53,20 @@ export class GameBoard extends Component {
 
 	correctContainer = () => {
 		const chosenWordArray = this.state.chosenWord.split('');
-		console.log(this.state.correctLetters);
 		return chosenWordArray.map(letter => {
-			const visibility = this.state.correctLetters.includes(letter);
+			const visibility = this.state.guessedLetters.includes(letter);
 			return <CorrectLetter visible={visibility} letter={letter} />;
 		});
 	};
 
 	renderBalloons = () => {
 		const balloons = [];
+		// redundant - extract to function
+		const incorrectLetters = !guessedLetters.filter(letter => chosenWord.includes(letter));
 		for (let i = 0; i < 6 - this.state.incorrectLetters.length; i++) {
 			balloons.push(<Text>🎈</Text>);
 		}
 		return <View>{balloons}</View>;
-	};
-
-	// todo delete
-	handleChange = (name, value) => {
-		this.setState({
-			[name]: value
-		});
 	};
 
 	handleSubmit = () => {
@@ -141,7 +135,7 @@ export class GameBoard extends Component {
 						accessibilityLabel="Type your guess here. A guess is one letter"
 						placeholder="What's your guess?"
 						style={styles.inputStyle}
-						onChangeText={value => this.handleChange('guess', value)}
+						onChangeText={value => this.setState({guess: value})}
 						value={this.state.guess}
 						maxLength={1}
 					/>
