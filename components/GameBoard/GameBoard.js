@@ -109,7 +109,10 @@ export class GameBoard extends Component {
 	checkGameStatus = () => {
 		const splitChosenWord = this.state.chosenWord.split('');
 		const incorrectLetters = this.getIncorrectLetters();
-		if(this.state.guesses.includes(this.state.chosenWord) || splitChosenWord.every(letter => this.state.guesses.includes(letter))) {
+		if (
+			this.state.guesses.includes(this.state.chosenWord) ||
+			splitChosenWord.every(letter => this.state.guesses.includes(letter))
+		) {
 			this.setState({
 				gameOver: true,
 				playerScore: this.state.playerScore + 1
@@ -144,6 +147,29 @@ export class GameBoard extends Component {
 		return guesses.filter(letter => !chosenWord.includes(letter));
 	};
 
+	renderButton = () => {
+		if (this.state.playerScore === 3 || this.state.computerScore === 3) {
+			return (
+				<Button
+					title="End Game"
+					color={theme.secondaryColor}
+					style={styles.buttonText}
+					accessibilityLabel="End the game"
+					onPress={() => this.props.navigation.navigate('Home')}
+				/>
+			);
+		}
+		return (
+			<Button
+				title="Play Again"
+				color={theme.secondaryColor}
+				style={styles.buttonText}
+				accessibilityLabel="Play a new game"
+				onPress={this.resetGame}
+			/>
+		);
+	};
+
 	render() {
 		const incorrectLetters = this.getIncorrectLetters();
 		const lettersToRender = incorrectLetters.length ? this.incorrectContainer() : <Text>Not enough helium</Text>;
@@ -159,7 +185,11 @@ export class GameBoard extends Component {
 					<Score player="CPU" score={this.state.computerScore} />
 				</View>
 				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
-				<View style={styles.balloonContainer}>{this.renderBalloons()}</View>
+
+				<View style={styles.balloonContainer}>
+					<Text style={styles.text}>Remaining Guesses</Text>
+					{this.renderBalloons()}
+				</View>
 				<Image source={require('../../assets/stickman.png')} />
 				<View style={styles.correctLettersContainer}>{this.correctContainer()}</View>
 				<View style={styles.containerFlex}>
@@ -182,26 +212,11 @@ export class GameBoard extends Component {
 						<Text style={styles.text}>{this.state.error}</Text>
 					</View>
 					<View style={{ marginTop: 22 }}>
-						<Modal
-							animationType="slide"
-							transparent={false}
-							visible={this.state.gameOver}
-							// onRequestClose={() => {
-							// 	Alert.alert('Modal has been closed.');
-							// }}
-						>
+						<Modal animationType="slide" transparent={false} visible={this.state.gameOver}>
 							<View style={{ marginTop: 22 }}>
 								<View>
 									<Text>{this.setWinnerText()}</Text>
-									<View style={styles.button}>
-										<Button
-											title="Play Again"
-											color={theme.secondaryColor}
-											style={styles.buttonText}
-											accessibilityLabel="Play a new game"
-											onPress={this.resetGame}
-										/>
-									</View>
+									<View style={styles.button}>{this.renderButton()}</View>
 								</View>
 							</View>
 						</Modal>
