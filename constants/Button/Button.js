@@ -7,7 +7,7 @@ const Button = props => {
 	return (
 		<View style={styles.container}>
 			<TouchableHighlight {...props} style={{ ...styles.button, ...props.style }}>
-				<Text style={styles.buttonText}>{props.children}</Text>
+				<Text style={styles.buttonText} accessibilityLabel={props.accessibilityLabel}>{props.children}</Text>
 			</TouchableHighlight>
 		</View>
 	);

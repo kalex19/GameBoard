@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import IncorrectLetter from '../../constants/IncorrectLetter/IncorrectLetter';
 import CorrectLetter from '../../constants/CorrectLetter/CorrectLetter';
 import { Audio } from 'expo-av';
-import { Avatar, Badge, Icon, withBadge } from 'react-native-elements';
+import { Avatar, Badge } from 'react-native-elements';
 
 export class GameBoard extends Component {
 	state = {
@@ -34,32 +34,21 @@ export class GameBoard extends Component {
 	};
 
 	pickWord = () => {
-		const randomIndex = Math.floor(Math.random() * this.state.words.length);
-		const chosenWord = this.state.words[randomIndex];
+		const { words } = this.state;
+		const randomIndex = Math.floor(Math.random() * words.length);
+		const chosenWord = words[randomIndex];
 		console.log(chosenWord);
 		this.setState({ chosenWord });
 	};
 
-	incorrectContainer = () => {
-		const incorrectLetters = this.getIncorrectLetters();
-		return incorrectLetters.map(letter => <IncorrectLetter letter={letter} />);
+	getIncorrectLetters = () => {
+		const { guesses, chosenWord } = this.state;
+		return guesses.filter(letter => !chosenWord.includes(letter));
 	};
 
-	correctContainer = () => {
-		const { chosenWord } = this.state;
-		if (chosenWord.length) {
-			const chosenWordArray = chosenWord.split('');
-			return chosenWordArray.map(letter => {
-				const visibility = this.state.guesses.includes(letter);
-				return <CorrectLetter visible={visibility} letter={letter} />;
-			});
-		} else {
-			return (
-				<View>
-					<Text style={styles.text}>Out of breath💨... one moment.</Text>
-				</View>
-			);
-		}
+	renderIncorrectLetters = () => {
+		const incorrectLetters = this.getIncorrectLetters();
+		return incorrectLetters.map(letter => <IncorrectLetter letter={letter} />);
 	};
 
 	renderBalloons = () => {
@@ -74,10 +63,34 @@ export class GameBoard extends Component {
 		}
 		return (
 			<View style={styles.balloonContainer}>
-				<Text style={{ ...styles.text, marginBottom: 10 }}>Balloons Left</Text>
+				<Text
+					style={{ ...styles.text, marginBottom: 10 }}
+					accessibilityLabel="Number of guesses left before the end of the round"
+				>
+					Balloons Left
+				</Text>
 				<View style={{ flexDirection: 'row' }}>{balloons}</View>
 			</View>
 		);
+	};
+
+	renderCorrectLetters = () => {
+		const { chosenWord } = this.state;
+		if (chosenWord.length) {
+			const chosenWordArray = chosenWord.split('');
+			return chosenWordArray.map(letter => {
+				const visibility = this.state.guesses.includes(letter);
+				return <CorrectLetter visible={visibility} letter={letter} />;
+			});
+		} else {
+			return (
+				<View>
+					<Text style={styles.text} accessibilityLabel="The chosen word is loading">
+						Out of breath💨... one moment.
+					</Text>
+				</View>
+			);
+		}
 	};
 
 	playBalloonPop = async () => {
@@ -173,16 +186,6 @@ export class GameBoard extends Component {
 		});
 	};
 
-	getIncorrectLetters = () => {
-		const { guesses, chosenWord } = this.state;
-		return guesses.filter(letter => !chosenWord.includes(letter));
-	};
-
-	navigateHome = async () => {
-		await this.playBalloonPop();
-		this.props.navigation.navigate('Home');
-	};
-
 	renderButton = () => {
 		if (this.state.playerScore === 3 || this.state.computerScore === 3) {
 			return (
@@ -206,10 +209,15 @@ export class GameBoard extends Component {
 		);
 	};
 
+	navigateHome = async () => {
+		await this.playBalloonPop();
+		this.props.navigation.navigate('Home');
+	};
+
 	render() {
 		const incorrectLetters = this.getIncorrectLetters();
 		const lettersToRender = incorrectLetters.length ? (
-			this.incorrectContainer()
+			this.renderIncorrectLetters()
 		) : (
 			<Text style={styles.text}>No Guesses Yet! </Text>
 		);
@@ -229,7 +237,9 @@ export class GameBoard extends Component {
 						<Text accessibilityLabel="Word guessing game called Wordpop" style={styles.header}>
 							WORDP🎈P
 						</Text>
-						<Text style={styles.text}>Round {this.state.round}</Text>
+						<Text style={styles.text} accessibilityLabel="Current game round">
+							Round {this.state.round}
+						</Text>
 					</View>
 					<View>
 						<Avatar rounded source={require('../../assets/kari-shea-1SAnrIxw5OY-unsplash.jpg')} size="large" />
@@ -243,11 +253,11 @@ export class GameBoard extends Component {
 				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
 				<View style={styles.balloonContainer}>{this.renderBalloons()}</View>
 				<Image source={require('../../assets/stickmanninja.png')} />
-				<View style={styles.correctLettersContainer}>{this.correctContainer()}</View>
+				<View style={styles.correctLettersContainer}>{this.renderCorrectLetters()}</View>
 				<Text style={styles.text}>{this.state.error}</Text>
 				<View style={styles.containerFlex}>
 					<TextInput
-						accessibilityLabel="Type your guess here. A guess is one letter"
+						accessibilityLabel="Type your guess here. A guess is one letter or the whole word"
 						placeholder="What's your guess?"
 						style={styles.inputStyle}
 						onChangeText={value => this.setState({ currentGuess: value })}
@@ -259,7 +269,7 @@ export class GameBoard extends Component {
 							title="ENTER"
 							color={theme.secondaryColor}
 							style={styles.buttonText}
-							accessibilityLabel="Tap me to submit your letter guess"
+							accessibilityLabel="Tap me to submit your guess"
 							onPress={this.handleSubmit}
 						/>
 					</View>

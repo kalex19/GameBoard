@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { ImageBackground, View } from 'react-native';
 import Button from '../../constants/Button/Button';
-import { styles } from './styles';
-import theme from '../../constants/theme';
 import Header from '../../constants/Header/Header';
 import { Audio } from 'expo-av';
 import { withNavigation } from 'react-navigation';
@@ -15,12 +13,11 @@ class HomeScreen extends Component {
 
 	playBalloonPop = async () => {
 		const soundObject = new Audio.Sound();
-
 		try {
 			await soundObject.loadAsync(require('../../assets/Pop.m4a'));
 			await soundObject.playAsync();
 		} catch (error) {
-			console.log('oops');
+			console.log('oops, no sound');
 		}
 	};
 
@@ -32,7 +29,7 @@ class HomeScreen extends Component {
 						backgroundColor: 'rgba(0,0,0,.4)'
 					}}
 				>
-					<Header accessibilityLabel="Word guessing game called WordPop">WORDP🎈P</Header>
+					<Header accessibilityLabel="Welcome to a word guessing game called WordPop">WORDP🎈P</Header>
 					<Button accessibilityLabel="Tap me to play a new game" onPress={this.navigateToGame}>
 						Ready to Play?
 					</Button>

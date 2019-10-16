@@ -6,7 +6,7 @@ import './setup';
 describe('App', () => {
 	describe('Rendering', () => {
 		it('should match to snapshot', () => {
-			const component = shallow(<App navigation />);
+			const component = shallow(<App />);
 			expect(component).toMatchSnapshot();
 		});
 	});

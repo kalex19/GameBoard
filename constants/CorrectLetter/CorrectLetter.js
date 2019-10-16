@@ -5,7 +5,7 @@ import styles from './styles';
 const CorrectLetter = props => {
 	return (
 		<View style={styles.correctContainer}>
-			<Text style={{ ...styles.letter, ...props.visible }}>{props.visible ? props.letter : '*'}</Text>
+			<Text accessibilityLabel={props.accessibilityLabel} style={{ ...styles.letter, ...props.visible }}>{props.visible ? props.letter : '*'}</Text>
 		</View>
 	);
 };
