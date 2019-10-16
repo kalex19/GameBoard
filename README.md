@@ -76,17 +76,19 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ![GameBoard](https://user-images.githubusercontent.com/39716292/66930664-2bf34c80-eff2-11e9-9d8c-903a55561a16.PNG)
 
-### In Progress
+### In Progress - Letter Guess
 
+![InProgress](https://user-images.githubusercontent.com/39716292/66930743-43323a00-eff2-11e9-8b60-52497887c5c6.PNG)
 
+### In Progress - Word Guess
+
+![GuessWord](https://user-images.githubusercontent.com/39716292/66930753-475e5780-eff2-11e9-9bd7-b66a52e6edb4.PNG)
 
 ### Winner Modal
 
 
 ### Lost Game Modal
 
-
-### My Profile
 
 
 ## Learning Goals
