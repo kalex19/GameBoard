@@ -3,7 +3,7 @@ import theme from '../theme';
 
 export default StyleSheet.create({
 	containerStacked: {
-		marginBottom: 20,
+		marginTop: 15,
 		flex: 1,
 		flexDirection: 'column'
 	},
@@ -12,12 +12,12 @@ export default StyleSheet.create({
 		fontFamily: theme.secondaryFont,
 		color: theme.primaryColor,
 		fontWeight: '900',
-		fontSize: 20,
+		fontSize: 20
 	},
 	score: {
 		textAlign: 'center',
 		fontFamily: theme.secondaryFont,
-		color: 'red',
-		fontSize: 20,
+		color: theme.tertiaryColor,
+		fontSize: 30
 	}
 });

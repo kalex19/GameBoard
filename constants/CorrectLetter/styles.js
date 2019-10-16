@@ -9,9 +9,10 @@ export default StyleSheet.create({
 		fontSize: 20
 	},
 	correctContainer: {
-		margin: 2,
-		borderBottomColor: 'red',
-		borderBottomWidth: 5,
-		width: '5%'
+		borderBottomColor: theme.tertiaryColor,
+		borderBottomWidth: 2,
+		width: '5%',
+		padding: 0,
+		margin: 2
 	}
 });

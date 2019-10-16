@@ -8,51 +8,76 @@ export const styles = StyleSheet.create({
 		flexDirection: 'row',
 		marginTop: 20
 	},
-	inputStyle: {
-		width: '60%',
-		height: '20%',
-		backgroundColor: theme.secondaryColor,
-		borderColor: theme.primaryColor,
-		borderWidth: 5,
+	columnContainer: {
+		flex: 1,
+		justifyContent: 'space-evenly',
+		flexDirection: 'column'
+	},
+	header: {
+		textAlign: 'center',
+		fontFamily: theme.primaryFont,
 		color: theme.primaryColor,
+		fontWeight: '900',
 		fontSize: 20,
-		paddingLeft: 5
-	},
-	button: {
-		backgroundColor: theme.primaryColor,
-		borderRadius: 100,
-		height: '30%',
-		margin: 5,
-		justifyContent: 'flex-end',
-		width: '30%'
-	},
-	buttonText: {
-		fontFamily: theme.secondaryFont,
-		fontSize: 30
-	},
-	text: {
-		color: theme.primaryColor,
-		fontSize: 20,
-		alignSelf: 'center'
+		textDecorationLine: 'underline',
+		textDecorationColor: theme.tertiaryColor
 	},
 	incorrectLettersContainer: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
-		height: 30
+		height: 10,
+		width: '80%',
+		borderColor: theme.tertiaryColor,
+		borderWidth: 1,
+		margin: 5
 	},
 	balloonContainer: {
 		flex: 1,
-		flexDirection: 'row',
+		flexDirection: 'column',
 		justifyContent: 'center',
-		width: '100%',
-		height: 40
+		width: '60%',
+		height: '30%',
+		marginLeft: 30,
+		margin: 5
 	},
 	correctLettersContainer: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
 		width: '100%',
-		height: 30
+		height: 20
+	},
+	inputStyle: {
+		width: '55%',
+		height: '60%',
+		backgroundColor: theme.secondaryColor,
+		borderColor: theme.primaryColor,
+		borderWidth: 1,
+		color: theme.primaryColor,
+		fontSize: 20,
+		margin: 5,
+		flex: 1,
+		paddingLeft: 15,
+		justifyContent: 'center'
+	},
+	button: {
+		backgroundColor: theme.primaryColor,
+		borderRadius: 100,
+		height: '60%',
+		margin: 5,
+		justifyContent: 'center',
+		width: '30%'
+	},
+	buttonText: {
+		fontFamily: theme.secondaryFont,
+		fontSize: 20,
+		alignSelf: 'center'
+	},
+	text: {
+		color: theme.primaryColor,
+		fontSize: 20,
+		alignSelf: 'center',
+		margin: 1
 	}
 });

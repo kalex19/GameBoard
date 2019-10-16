@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { styles } from './styles';
 import theme from '../../constants/theme';
-import { Text, View, TextInput, Button, Modal, Image } from 'react-native';
+import { Text, View, TextInput, Button, Modal, Image, SafeAreaView } from 'react-native';
 import { getWords } from '../../utils/getWords';
 import PropTypes from 'prop-types';
-import Header from '../../constants/Header/Header';
 import Score from '../../constants/Score/Score';
 import IncorrectLetter from '../../constants/IncorrectLetter/IncorrectLetter';
 import CorrectLetter from '../../constants/CorrectLetter/CorrectLetter';
+import { Audio } from 'expo-av';
 
 export class GameBoard extends Component {
 	state = {
@@ -57,16 +57,32 @@ export class GameBoard extends Component {
 		const balloons = [];
 		const incorrectLetters = this.getIncorrectLetters();
 		for (let i = 0; i < 6 - incorrectLetters.length; i++) {
-			balloons.push(<Text>🎈</Text>);
+			balloons.push(<Text style={{ fontSize: 20 }}>🎈</Text>);
 		}
-		return <View style={styles.balloonContainer}>{balloons}</View>;
+		return (
+			<View style={styles.balloonContainer}>
+				<Text style={{ ...styles.text, marginBottom: 10 }}>Balloons Left</Text>
+				<View style={{ flexDirection: 'row' }}>{balloons}</View>
+			</View>
+		);
+	};
+
+	playBalloonPop = async () => {
+		const soundObject = new Audio.Sound();
+
+		try {
+			await soundObject.loadAsync(require('../../assets/Pop.m4a'));
+			await soundObject.playAsync();
+		} catch (error) {
+			console.log('oops');
+		}
 	};
 
 	handleSubmit = () => {
 		if (!/[a-z]+/i.test(this.state.currentGuess)) {
 			this.setState({
-				error: 'Please only use letters. No symbols or numbers.',
-				guess: ''
+				error: 'Letters only. No symbols or numbers.',
+				currentGuess: ''
 			});
 		} else if (this.state.currentGuess.length === 1) {
 			this.handleLetterSubmit();
@@ -78,7 +94,7 @@ export class GameBoard extends Component {
 	handleLetterSubmit = () => {
 		if (this.state.guesses.includes(this.state.currentGuess.toLowerCase())) {
 			this.setState({
-				error: 'Already guessed this letter. Please guess again.',
+				error: 'Please guess again.',
 				currentGuess: ''
 			});
 		} else {
@@ -128,9 +144,9 @@ export class GameBoard extends Component {
 	setWinnerText = () => {
 		const incorrectLetters = this.getIncorrectLetters();
 		if (incorrectLetters.length === 6) {
-			return 'You Lost!';
+			return <Text style={{ ...styles.text, marginTop: 50 }}>You Lost!</Text>;
 		}
-		return 'You Won!';
+		return <Text style={{ ...styles.text, marginTop: 50 }}>You Won!</Text>;
 	};
 
 	resetGame = () => {
@@ -147,6 +163,11 @@ export class GameBoard extends Component {
 		return guesses.filter(letter => !chosenWord.includes(letter));
 	};
 
+	navigateHome = async () => {
+		await this.playBalloonPop();
+		this.props.navigation.navigate('Home');
+	};
+
 	renderButton = () => {
 		if (this.state.playerScore === 3 || this.state.computerScore === 3) {
 			return (
@@ -155,7 +176,7 @@ export class GameBoard extends Component {
 					color={theme.secondaryColor}
 					style={styles.buttonText}
 					accessibilityLabel="End the game"
-					onPress={() => this.props.navigation.navigate('Home')}
+					onPress={this.navigateHome}
 				/>
 			);
 		}
@@ -172,26 +193,29 @@ export class GameBoard extends Component {
 
 	render() {
 		const incorrectLetters = this.getIncorrectLetters();
-		const lettersToRender = incorrectLetters.length ? this.incorrectContainer() : <Text>Not enough helium</Text>;
+		const lettersToRender = incorrectLetters.length ? (
+			this.incorrectContainer()
+		) : (
+			<Text style={styles.text}>No Guesses Yet! </Text>
+		);
 
 		return (
-			<View style={theme.container}>
+			<SafeAreaView style={theme.container}>
 				<View style={styles.containerFlex}>
 					<Score player="You" score={this.state.playerScore} />
-					<Header accessibilityLabel="Word guessing game called Wordpop" style={{ fontSize: 30 }}>
-						WORDP🎈P
-					</Header>
-					<Text>{this.state.round}</Text>
+					<View style={styles.columnContainer}>
+						<Text accessibilityLabel="Word guessing game called Wordpop" style={styles.header}>
+							WORDP🎈P
+						</Text>
+						<Text style={styles.text}>Round {this.state.round}</Text>
+					</View>
 					<Score player="CPU" score={this.state.computerScore} />
 				</View>
 				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
-
-				<View style={styles.balloonContainer}>
-					<Text style={styles.text}>Remaining Guesses</Text>
-					{this.renderBalloons()}
-				</View>
-				<Image source={require('../../assets/stickman.png')} />
+				<View style={styles.balloonContainer}>{this.renderBalloons()}</View>
+				<Image source={require('../../assets/stickmanninja.png')} />
 				<View style={styles.correctLettersContainer}>{this.correctContainer()}</View>
+				<Text style={styles.text}>{this.state.error}</Text>
 				<View style={styles.containerFlex}>
 					<TextInput
 						accessibilityLabel="Type your guess here. A guess is one letter"
@@ -209,20 +233,19 @@ export class GameBoard extends Component {
 							accessibilityLabel="Tap me to submit your letter guess"
 							onPress={this.handleSubmit}
 						/>
-						<Text style={styles.text}>{this.state.error}</Text>
 					</View>
-					<View style={{ marginTop: 22 }}>
-						<Modal animationType="slide" transparent={false} visible={this.state.gameOver}>
+					<View style={{ marginTop: 50, backgroundColor: theme.primaryColor }}>
+						<Modal animationType="fade" transparent={false} visible={this.state.gameOver}>
 							<View style={{ marginTop: 22 }}>
 								<View>
-									<Text>{this.setWinnerText()}</Text>
-									<View style={styles.button}>{this.renderButton()}</View>
+									<Text style={styles.text}>{this.setWinnerText()}</Text>
+									<View style={{ ...styles.button, fontSize: 30 }}>{this.renderButton()}</View>
 								</View>
 							</View>
 						</Modal>
 					</View>
 				</View>
-			</View>
+			</SafeAreaView>
 		);
 	}
 }
