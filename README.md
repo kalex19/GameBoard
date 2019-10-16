@@ -70,6 +70,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### HomeScreen
 
+![HomeScreen](https://user-images.githubusercontent.com/39716292/66930602-1716b900-eff2-11e9-93a9-c0f1bcf7297d.PNG)
 
 ### GameBoard
 
