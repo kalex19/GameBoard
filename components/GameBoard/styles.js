@@ -4,9 +4,9 @@ import theme from '../../constants/theme';
 export const styles = StyleSheet.create({
 	containerFlex: {
 		flex: 1,
-		justifyContent: 'space-evenly',
+		justifyContent: 'space-around',
 		flexDirection: 'row',
-		marginTop: 20
+		margin: 20
 	},
 	columnContainer: {
 		flex: 1,

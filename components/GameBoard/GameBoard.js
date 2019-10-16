@@ -4,10 +4,10 @@ import theme from '../../constants/theme';
 import { Text, View, TextInput, Button, Modal, Image, SafeAreaView } from 'react-native';
 import { getWords } from '../../utils/getWords';
 import PropTypes from 'prop-types';
-import Score from '../../constants/Score/Score';
 import IncorrectLetter from '../../constants/IncorrectLetter/IncorrectLetter';
 import CorrectLetter from '../../constants/CorrectLetter/CorrectLetter';
 import { Audio } from 'expo-av';
+import { Avatar, Badge, Icon, withBadge } from 'react-native-elements';
 
 export class GameBoard extends Component {
 	state = {
@@ -206,16 +206,29 @@ export class GameBoard extends Component {
 		return (
 			<SafeAreaView style={theme.container}>
 				<View style={styles.containerFlex}>
-					<Score player="You" score={this.state.playerScore} />
+					<View>
+						<Avatar rounded source={require('../../assets/valerie-elash-JQDflNNnrEE-unsplash.jpg')} size="large" />
+						<Badge
+							status="error"
+							value={this.state.playerScore}
+							containerStyle={{ position: 'absolute', top: -1, right: -1 }}
+						/>
+					</View>
 					<View style={styles.columnContainer}>
 						<Text accessibilityLabel="Word guessing game called Wordpop" style={styles.header}>
 							WORDP🎈P
 						</Text>
 						<Text style={styles.text}>Round {this.state.round}</Text>
 					</View>
-					<Score player="CPU" score={this.state.computerScore} />
+					<View>
+						<Avatar rounded source={require('../../assets/kari-shea-1SAnrIxw5OY-unsplash.jpg')} size="large" />
+						<Badge
+							status="error"
+							value={this.state.computerScore}
+							containerStyle={{ position: 'absolute', top: -1, right: -1 }}
+						/>
+					</View>
 				</View>
-
 				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
 				<View style={styles.balloonContainer}>{this.renderBalloons()}</View>
 				<Image source={require('../../assets/stickmanninja.png')} />
