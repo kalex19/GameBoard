@@ -57,7 +57,11 @@ export class GameBoard extends Component {
 		const balloons = [];
 		const incorrectLetters = this.getIncorrectLetters();
 		for (let i = 0; i < 6 - incorrectLetters.length; i++) {
-			balloons.push(<Text style={{ fontSize: 20 }}>🎈</Text>);
+			balloons.push(
+				<Text style={{ fontSize: 20 }} key={i}>
+					🎈
+				</Text>
+			);
 		}
 		return (
 			<View style={styles.balloonContainer}>
@@ -144,9 +148,9 @@ export class GameBoard extends Component {
 	setWinnerText = () => {
 		const incorrectLetters = this.getIncorrectLetters();
 		if (incorrectLetters.length === 6) {
-			return <Text style={{ ...styles.text, marginTop: 50 }}>You Lost!</Text>;
+			return <Text style={styles.modalText}>You Lost! 💥</Text>;
 		}
-		return <Text style={{ ...styles.text, marginTop: 50 }}>You Won!</Text>;
+		return <Text style={styles.modalText}>You Won! 🎉</Text>;
 	};
 
 	resetGame = () => {
@@ -211,6 +215,7 @@ export class GameBoard extends Component {
 					</View>
 					<Score player="CPU" score={this.state.computerScore} />
 				</View>
+
 				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
 				<View style={styles.balloonContainer}>{this.renderBalloons()}</View>
 				<Image source={require('../../assets/stickmanninja.png')} />
@@ -234,13 +239,11 @@ export class GameBoard extends Component {
 							onPress={this.handleSubmit}
 						/>
 					</View>
-					<View style={{ marginTop: 50, backgroundColor: theme.primaryColor }}>
+					<View style={styles.modalContainer}>
 						<Modal animationType="fade" transparent={false} visible={this.state.gameOver}>
-							<View style={{ marginTop: 22 }}>
-								<View>
-									<Text style={styles.text}>{this.setWinnerText()}</Text>
-									<View style={{ ...styles.button, fontSize: 30 }}>{this.renderButton()}</View>
-								</View>
+							<View>
+								<Text style={{ marginTop: 100, marginLeft: 100 }}>{this.setWinnerText()}</Text>
+								<View style={styles.modalButton}>{this.renderButton()}</View>
 							</View>
 						</Modal>
 					</View>

@@ -79,5 +79,20 @@ export const styles = StyleSheet.create({
 		fontSize: 20,
 		alignSelf: 'center',
 		margin: 1
+	},
+	modalText: {
+		color: theme.primaryColor,
+		fontSize: 40,
+		alignSelf: 'center',
+		width: '50%'
+	},
+	modalButton: {
+		backgroundColor: theme.primaryColor,
+		borderRadius: 100,
+		height: '20%',
+		justifyContent: 'center',
+		alignSelf: 'center',
+		width: '60%',
+		marginTop: 50
 	}
 });
