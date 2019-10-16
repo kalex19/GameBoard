@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import theme from '../../../theme';
+import theme from '../theme';
 
 export default StyleSheet.create({
 	container: {
@@ -13,11 +13,11 @@ export default StyleSheet.create({
 		height: 70,
 		justifyContent: 'center',
 		margin: 10,
-		width: '85%'
+		width: '75%'
 	},
 	buttonText: {
 		color: theme.secondaryColor,
-		fontFamily: theme.primaryFont,
-		fontSize: 20
+		fontFamily: theme.secondaryFont,
+		fontSize: 30
 	}
 });

@@ -1,18 +1,23 @@
-import React from 'react';
-import { Image, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { ImageBackground, View } from 'react-native';
 import Button from '../../constants/Button/Button';
+import { styles } from './styles';
+import theme from '../../constants/theme';
+import Header from '../../constants/Header/Header';
 
-export default function HomeScreen() {
-	return (
-		<View style={styles.container}>
-			<Text accessibilityLabel="Word guessing game called Hangman">Hangman</Text>
-			<Image source={require('../../assets/hangman.js')} style={styles.logo} />
-			<Button accessibilityLabel="Tap me to play a new game"
-				onPress={() => props.navigation.navigate('GameBoard')}>Ready to Play?</Button>
-		</View>
-	);
+class HomeScreen extends Component {
+	render() {
+		return (
+			<ImageBackground source={require('../../assets/officeGames.png')} style={styles.backgroundImage}>
+				<View style={theme.container}>
+					<Header accessibilityLabel="Word guessing game called WordPop">WORDP🎈P</Header>
+				</View>
+				<Button accessibilityLabel="Tap me to play a new game" onPress={() => this.props.navigation.navigate('Game')}>
+					Ready to Play?
+				</Button>
+			</ImageBackground>
+		);
+	}
 }
 
-HomeScreen.navigationOptions = {
-	header: null
-};
+export default HomeScreen;
