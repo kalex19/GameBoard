@@ -19,7 +19,7 @@
 
  Wordpop is a fun word guessing game were the player plays the computer. By guessing the word correctly, the player wins. 
  If the player guesses six incorrect letters (letters that do not make up the word), they lose that round. 
- After either opponent wins, the game restarts.
+ After either opponent wins, there is a new round. Once one player gets three points, the game restarts.
 
 ## User Stories
 
@@ -30,7 +30,7 @@
 * Player can guess the whole word
 * Player can play again if they win or lose
 * Player can restart the game at any time
-* Player can end the game after they win three rounds or the computer wins three rounds
+* Player can end the game after either player wins three rounds
 
 
 ## Tech Stack
@@ -111,7 +111,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 * Converting the API
 * Implementing new React Native elements
-* Creating functinoality for incorrect/correct guesses
+* Creating functionality for incorrect/correct guesses
 * Coming up with a concept for a Hangman app that is not explicitly Hangman i.e. WORDP🎈P
 
 
@@ -122,6 +122,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 * User can play other users
 * User can create an account
 * User can choose difficulty level
+* Work on speed performance levels so the app and app assets load quicker
 
 ## Developers
 
