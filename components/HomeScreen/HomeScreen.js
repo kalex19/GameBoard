@@ -10,7 +10,7 @@ import { withNavigation } from 'react-navigation';
 class HomeScreen extends Component {
 	navigateToGame = async () => {
 		await this.playBalloonPop();
-	 this.props.navigation.navigate('Game');
+		this.props.navigation.navigate('Game');
 	};
 
 	playBalloonPop = async () => {
@@ -26,8 +26,12 @@ class HomeScreen extends Component {
 
 	render() {
 		return (
-			<ImageBackground source={require('../../assets/officeGames.png')} style={styles.backgroundImage}>
-				<View style={theme.container}>
+			<ImageBackground source={require('../../assets/officeGames.png')} style={{ height: '100%', width: '100%' }}>
+				<View
+					style={{
+						backgroundColor: 'rgba(0,0,0,.4)'
+					}}
+				>
 					<Header accessibilityLabel="Word guessing game called WordPop">WORDP🎈P</Header>
 					<Button accessibilityLabel="Tap me to play a new game" onPress={this.navigateToGame}>
 						Ready to Play?

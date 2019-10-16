@@ -46,11 +46,20 @@ export class GameBoard extends Component {
 	};
 
 	correctContainer = () => {
-		const chosenWordArray = this.state.chosenWord.split('');
-		return chosenWordArray.map(letter => {
-			const visibility = this.state.guesses.includes(letter);
-			return <CorrectLetter visible={visibility} letter={letter} />;
-		});
+		const { chosenWord } = this.state;
+		if (chosenWord.length) {
+			const chosenWordArray = chosenWord.split('');
+			return chosenWordArray.map(letter => {
+				const visibility = this.state.guesses.includes(letter);
+				return <CorrectLetter visible={visibility} letter={letter} />;
+			});
+		} else {
+			return (
+				<View>
+					<Text style={styles.text}>Out of breath💨... one moment.</Text>
+				</View>
+			);
+		}
 	};
 
 	renderBalloons = () => {
@@ -102,28 +111,30 @@ export class GameBoard extends Component {
 				currentGuess: ''
 			});
 		} else {
-			this.setState(
-				{
-					error: '',
-					guesses: [...this.state.guesses, this.state.currentGuess.toLowerCase()],
-					currentGuess: ''
-				},
-				() => this.checkGameStatus()
-			);
+			this.setCorrectState();
 		}
 	};
 
 	handleWordSubmit = () => {
 		if (this.state.currentGuess.toLowerCase() === this.state.chosenWord) {
-			this.setState(
-				{
-					error: '',
-					guesses: [...this.state.guesses, this.state.currentGuess.toLowerCase()],
-					currentGuess: ''
-				},
-				() => this.checkGameStatus()
-			);
+			this.setCorrectState();
+		} else {
+			this.setState({
+				currentGuess: '',
+				error: 'Please guess again'
+			});
 		}
+	};
+
+	setCorrectState = () => {
+		this.setState(
+			{
+				error: '',
+				guesses: [...this.state.guesses, this.state.currentGuess.toLowerCase()],
+				currentGuess: ''
+			},
+			() => this.checkGameStatus()
+		);
 	};
 
 	checkGameStatus = () => {

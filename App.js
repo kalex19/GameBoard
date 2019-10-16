@@ -19,10 +19,7 @@ const AppNavigator = createStackNavigator(
 			}
 		},
 		Game: {
-			screen: GameBoard,
-			navigationOptions: {
-				header: null
-			}
+			screen: GameBoard
 		}
 	},
 	{
