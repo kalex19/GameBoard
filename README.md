@@ -70,27 +70,27 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### HomeScreen
 
-![HomeScreen](https://user-images.githubusercontent.com/39716292/66930602-1716b900-eff2-11e9-93a9-c0f1bcf7297d.PNG)
+![HomeScreen](https://user-images.githubusercontent.com/39716292/66932448-db312300-eff4-11e9-9e90-b33039830a34.PNG)
 
 ### GameBoard
 
-![GameBoard](https://user-images.githubusercontent.com/39716292/66932267-90afa680-eff4-11e9-8ca7-61a7e47c6e11.PNG)
+![GameBoard](https://user-images.githubusercontent.com/39716292/66932457-dec4aa00-eff4-11e9-88f3-6c95753f207b.PNG)
 
 ### In Progress - Letter Guess
 
-![InProgress](https://user-images.githubusercontent.com/39716292/66930743-43323a00-eff2-11e9-8b60-52497887c5c6.PNG)
+![InProgress](https://user-images.githubusercontent.com/39716292/66932464-e1bf9a80-eff4-11e9-95bd-1a062ad8abd5.PNG)
 
 ### In Progress - Word Guess
 
-![GuessWord](https://user-images.githubusercontent.com/39716292/66930753-475e5780-eff2-11e9-9bd7-b66a52e6edb4.PNG)
+![GuessWord](https://user-images.githubusercontent.com/39716292/66932469-e4ba8b00-eff4-11e9-9576-090c6cf45cd3.PNG)
 
 ### Winner Modal
 
-![WinnerModal](https://user-images.githubusercontent.com/39716292/66930833-6bba3400-eff2-11e9-9d5e-e2247e80ce0c.PNG)
+![WinnerModal](https://user-images.githubusercontent.com/39716292/66932475-e71ce500-eff4-11e9-9b58-897e16061a91.PNG)
 
 ### Lost Game Modal
 
-![LostGameModal](https://user-images.githubusercontent.com/39716292/66930838-6e1c8e00-eff2-11e9-9414-69d10bc2b2a4.PNG)
+![LostGameModal](https://user-images.githubusercontent.com/39716292/66932481-eab06c00-eff4-11e9-8c37-7af8af78b70c.PNG)
 
 
 ## Learning Goals
