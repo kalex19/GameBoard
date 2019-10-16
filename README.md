@@ -86,50 +86,48 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### Winner Modal
 
+![WinnerModal](https://user-images.githubusercontent.com/39716292/66930833-6bba3400-eff2-11e9-9d5e-e2247e80ce0c.PNG)
 
 ### Lost Game Modal
 
+![LostGameModal](https://user-images.githubusercontent.com/39716292/66930838-6e1c8e00-eff2-11e9-9414-69d10bc2b2a4.PNG)
 
 
 ## Learning Goals
 
-This is a unique opportunity that presents some valuable goals:
-
-* Ultimately, demonstrate knowledge you’ve gained throughout Turing
-* Use an agile process to turn well defined requirements into deployed and production ready software
-* Gain experience dividing applications into components and domains of responsibilities to facilitate multi-developer teams. 
-* Service oriented architecture concepts and patterns are highly encouraged.
-* Explore and implement new concepts, patterns, or libraries that have not been explicitly taught while at Turing
-* Practice an advanced, professional git workflow (see whole-team expectations)
-* Gain more experience using continuous integration tools to build and automate the deployment of features in various environments
-* Build applications that execute in development, test, CI, and production environments
-* Focus on communication between front-end and back-end teams in order to complete and deploy features that have been outlined by the project spec
+* Use an API delivered in text format
+* Use Expo Audio Sound 
+* Create a fun game that models Hangman in concept
+* Use new React Native elements i.e. Avatar, Badge, ImageBackground
+* Practice an advanced, professional git workflow
 
 ## Challenges
 
-* Integrating Speech-To-Text functionality
-* Sending an audio file to the backend to be parsed and sent to Google's Speech API and returned as text
+* Using Expo Audio Sound to pop the balloon on every incorrect guess
+* Navigating past new React Native errors
 * Testing React Native
-* Working in the most up-to-date version of React Native one week after version updates
 
 ## Successes
 
-* Recieving text from the backend and rendering the text on the frontend
-* Testing React Native
-* Creating both client and caretaker accounts and functinoality which goes beyond the MVP
-* Meeting with Chris DeMars for accessibility advice and implementing his suggestions so the app is accessibile for clients and caretakers
+* Converting the API
+* Implementing new React Native elements
+* Creating functinoality for incorrect/correct guesses
+* Coming up with a concept for a Hangman app that is not explicitly Hangman i.e. WORDP🎈P
+
 
 ## Extensions
 
-* User can send a notification of task/list completion to the client
-* User can navigate the app using Speech-To-Text functionality
+* Balloon pop after each incorrect guess
+* Balloon animation to make balloon fly away or pop after each incorrect guess
+* User can play other users
+* User can create an account
+* User can choose difficulty level
 
 ## Developers
 
 👤 **Katie Lewis**
 
 * Github: [@Kalex19](https://github.com/Kalex19)
-
 
 ## Show your support
 
