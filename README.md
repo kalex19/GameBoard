@@ -74,7 +74,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### GameBoard
 
-![GameBoard](https://user-images.githubusercontent.com/39716292/66930664-2bf34c80-eff2-11e9-9d8c-903a55561a16.PNG)
+![GameBoard](https://user-images.githubusercontent.com/39716292/66932267-90afa680-eff4-11e9-8ca7-61a7e47c6e11.PNG)
 
 ### In Progress - Letter Guess
 
