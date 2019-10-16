@@ -6,12 +6,14 @@ export default StyleSheet.create({
 		textAlign: 'center',
 		fontFamily: theme.primaryFont,
 		color: theme.primaryColor,
-		fontSize: 20
+		fontSize: 25
 	},
 	correctContainer: {
+		borderBottomColor: theme.tertiaryColor,
+		borderBottomWidth: 2,
+		width: '5%',
 		margin: 2,
-		borderBottomColor: 'red',
-		borderBottomWidth: 5,
-		width: '5%'
+		height: '50%',
+		marginTop: 40
 	}
 });
