@@ -6,8 +6,11 @@ import { getWords } from '../../utils/getWords';
 import PropTypes from 'prop-types';
 import IncorrectLetter from '../../constants/IncorrectLetter/IncorrectLetter';
 import CorrectLetter from '../../constants/CorrectLetter/CorrectLetter';
-import { Audio } from 'expo-av';
 import { Avatar, Badge } from 'react-native-elements';
+import playBalloonPop from '../../constants/BalloonSound/BalloonSound';
+import Balloon from '../../constants/Balloon/Balloon';
+import BalloonScreen from '../BalloonScreen/BalloonScreen';
+import CorrectLetterScreen from '../CorrectLetterScreen/CorrectLetterScreen';
 
 export class GameBoard extends Component {
 	state = {
@@ -19,7 +22,9 @@ export class GameBoard extends Component {
 		computerScore: 0,
 		playerScore: 0,
 		gameOver: false,
-		error: ''
+		error: '',
+		hintButtonCount: 0,
+		hintButtonVisibility: true
 	};
 
 	async componentDidMount() {
@@ -49,59 +54,6 @@ export class GameBoard extends Component {
 	renderIncorrectLetters = () => {
 		const incorrectLetters = this.getIncorrectLetters();
 		return incorrectLetters.map(letter => <IncorrectLetter letter={letter} />);
-	};
-
-	renderBalloons = () => {
-		const balloons = [];
-		const incorrectLetters = this.getIncorrectLetters();
-		for (let i = 0; i < 6 - incorrectLetters.length; i++) {
-			balloons.push(
-				<Text style={{ fontSize: 20 }} key={i}>
-					🎈
-				</Text>
-			);
-		}
-		return (
-			<View style={styles.balloonContainer}>
-				<Text
-					style={{ ...styles.text, marginBottom: 10 }}
-					accessibilityLabel="Number of guesses left before the end of the round"
-				>
-					Balloons Left
-				</Text>
-				<View style={{ flexDirection: 'row' }}>{balloons}</View>
-			</View>
-		);
-	};
-
-	renderCorrectLetters = () => {
-		const { chosenWord } = this.state;
-		if (chosenWord.length) {
-			const chosenWordArray = chosenWord.split('');
-			return chosenWordArray.map(letter => {
-				const visibility = this.state.guesses.includes(letter);
-				return <CorrectLetter visible={visibility} letter={letter} />;
-			});
-		} else {
-			return (
-				<View>
-					<Text style={styles.text} accessibilityLabel="The chosen word is loading">
-						Out of breath💨... one moment.
-					</Text>
-				</View>
-			);
-		}
-	};
-
-	playBalloonPop = async () => {
-		const soundObject = new Audio.Sound();
-
-		try {
-			await soundObject.loadAsync(require('../../assets/Pop.m4a'));
-			await soundObject.playAsync();
-		} catch (error) {
-			console.log('oops');
-		}
 	};
 
 	handleSubmit = () => {
@@ -136,6 +88,7 @@ export class GameBoard extends Component {
 				currentGuess: '',
 				error: 'Please guess again'
 			});
+			this.setCorrectState();
 		}
 	};
 
@@ -165,6 +118,33 @@ export class GameBoard extends Component {
 			this.setState({
 				computerScore: this.state.computerScore + 1,
 				gameOver: true
+			});
+		}
+	};
+
+	revealHint = () => {
+		//account for repeats
+		//remove balloon
+		const chosenWordArray = this.state.chosenWord.split('');
+		const unusedLetter = chosenWordArray.find(letter => {
+			return !this.state.guesses.includes(letter);
+		});
+		const removeBalloon = '*';
+		if (this.state.chosenWord.includes(unusedLetter)) {
+			//only one time)
+			this.setState({
+				hintButtonCount: this.state.hintButtonCount + 1,
+				guesses: [...this.state.guesses, unusedLetter, removeBalloon]
+			});
+		} else {
+			chosenWordArray.find(letter => {
+				return !this.state.guesses.includes(letter);
+				//plus one index - go to next letter
+			});
+		}
+		if (this.state.hintButtonCount >= 2) {
+			this.setState({
+				hintButtonVisibility: !hintButtonVisibility
 			});
 		}
 	};
@@ -210,7 +190,7 @@ export class GameBoard extends Component {
 	};
 
 	navigateHome = async () => {
-		await this.playBalloonPop();
+		await playBalloonPop();
 		this.props.navigation.navigate('Home');
 	};
 
@@ -221,6 +201,7 @@ export class GameBoard extends Component {
 		) : (
 			<Text style={styles.text}>No Guesses Yet! </Text>
 		);
+		const lettersLength = 6 - incorrectLetters.length;
 
 		return (
 			<SafeAreaView style={theme.container}>
@@ -251,9 +232,11 @@ export class GameBoard extends Component {
 					</View>
 				</View>
 				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
-				<View style={styles.balloonContainer}>{this.renderBalloons()}</View>
+				<BalloonScreen lettersLength={lettersLength} />
 				<Image source={require('../../assets/stickmanninja.png')} />
-				<View style={styles.correctLettersContainer}>{this.renderCorrectLetters()}</View>
+				<View style={styles.correctLettersContainer}>
+					<CorrectLetterScreen guesses={this.state.guesses} chosenWord={this.state.chosenWord} />
+				</View>
 				<Text style={styles.text}>{this.state.error}</Text>
 				<View style={styles.containerFlex}>
 					<TextInput
@@ -273,6 +256,16 @@ export class GameBoard extends Component {
 							onPress={this.handleSubmit}
 						/>
 					</View>
+					<Button
+						color={theme.secondaryColor}
+						style={styles.buttonText}
+						visible={this.state.hintButtonVisibility}
+						title="Get a Hint"
+						accessibilityLabel="Tap me to get a hint"
+						onPress={this.revealHint}
+					>
+						Get a Hint
+					</Button>
 					<View style={styles.modalContainer}>
 						<Modal animationType="fade" transparent={false} visible={this.state.gameOver}>
 							<View>
