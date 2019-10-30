@@ -13,7 +13,9 @@ import CorrectLetterScreen from '../CorrectLetterScreen/CorrectLetterScreen';
 export class GameBoard extends Component {
 	state = {
 		words: [],
+		//reduce so only taking in a small number of words at a time
 		chosenWord: '',
+		//set state so already have a split chosen word
 		currentGuess: '',
 		guesses: [],
 		round: 1,
@@ -149,6 +151,7 @@ export class GameBoard extends Component {
 	};
 
 	setWinnerText = () => {
+		//change to component
 		const incorrectLetters = this.getIncorrectLetters();
 		if (incorrectLetters.length === 6) {
 			return <Text style={styles.modalText}>You Lost! 💥</Text>;
@@ -166,6 +169,7 @@ export class GameBoard extends Component {
 	};
 
 	renderButton = () => {
+		//change to component
 		if (this.state.playerScore === 3 || this.state.computerScore === 3) {
 			return (
 				<Button
@@ -232,39 +236,47 @@ export class GameBoard extends Component {
 				</View>
 				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
 				<BalloonScreen lettersLength={lettersLength} />
+				{/* //fix styling */}
 				<Image source={require('../../assets/stickmanninja.png')} />
 				<View style={styles.correctLettersContainer}>
 					<CorrectLetterScreen guesses={this.state.guesses} chosenWord={this.state.chosenWord} />
 				</View>
 				<Text style={styles.text}>{this.state.error}</Text>
+				{/* fix styling */}
 				<View style={styles.containerFlex}>
-					<TextInput
-						accessibilityLabel="Type your guess here. A guess is one letter or the whole word"
-						placeholder="What's your guess?"
-						style={styles.inputStyle}
-						onChangeText={value => this.setState({ currentGuess: value })}
-						value={this.state.currentGuess}
-						maxLength={this.state.chosenWord.length}
-					/>
-					<View style={styles.button}>
-						<Button
-							title="ENTER"
-							color={theme.secondaryColor}
-							style={styles.buttonText}
-							accessibilityLabel="Tap me to submit your guess"
-							onPress={this.handleSubmit}
-						/>
-					</View>
-					<Button
-						color={theme.secondaryColor}
-						style={styles.buttonText}
-						visible={this.state.hintButtonVisibility}
-						title="Get a Hint"
-						accessibilityLabel="Tap me to get a hint"
-						onPress={this.revealHint}
-					>
-						Get a Hint
-					</Button>
+					{this.state.chosenWord.length > 0 && (
+						<View style={styles.containerFlex}>
+							<TextInput
+								accessibilityLabel="Type your guess here. A guess is one letter or the whole word"
+								placeholder="What's your guess?"
+								style={styles.inputStyle}
+								onChangeText={value => this.setState({ currentGuess: value })}
+								value={this.state.currentGuess}
+								maxLength={this.state.chosenWord.length}
+							/>
+							<View style={styles.button}>
+								<Button
+									title="ENTER"
+									color={theme.secondaryColor}
+									style={styles.buttonText}
+									accessibilityLabel="Tap me to submit your guess"
+									onPress={this.handleSubmit}
+								/>
+							</View>
+							<View style={styles.button}>
+								<Button
+									color={theme.secondaryColor}
+									style={styles.buttonText}
+									visible={this.state.hintButtonVisibility}
+									title="Get a Hint"
+									accessibilityLabel="Tap me to get a hint"
+									onPress={this.revealHint}
+								>
+									Get a Hint
+								</Button>
+							</View>
+						</View>
+					)}
 					<View style={styles.modalContainer}>
 						<Modal animationType="fade" transparent={false} visible={this.state.gameOver}>
 							<View>
