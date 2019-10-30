@@ -5,10 +5,8 @@ import { Text, View, TextInput, Button, Modal, Image, SafeAreaView } from 'react
 import { getWords } from '../../utils/getWords';
 import PropTypes from 'prop-types';
 import IncorrectLetter from '../../constants/IncorrectLetter/IncorrectLetter';
-import CorrectLetter from '../../constants/CorrectLetter/CorrectLetter';
 import { Avatar, Badge } from 'react-native-elements';
 import playBalloonPop from '../../constants/BalloonSound/BalloonSound';
-import Balloon from '../../constants/Balloon/Balloon';
 import BalloonScreen from '../BalloonScreen/BalloonScreen';
 import CorrectLetterScreen from '../CorrectLetterScreen/CorrectLetterScreen';
 
