@@ -69,10 +69,7 @@ export class GameBoard extends Component {
 
 	handleLetterSubmit = () => {
 		if (this.state.guesses.includes(this.state.currentGuess.toLowerCase())) {
-			this.setState({
-				error: 'Please guess again.',
-				currentGuess: ''
-			});
+			this.setError();
 		} else {
 			this.setCorrectState();
 		}
@@ -82,12 +79,16 @@ export class GameBoard extends Component {
 		if (this.state.currentGuess.toLowerCase() === this.state.chosenWord) {
 			this.setCorrectState();
 		} else {
-			this.setState({
-				currentGuess: '',
-				error: 'Please guess again'
-			});
+			this.setError();
 			this.setCorrectState();
 		}
+	};
+
+	setError = () => {
+		this.setState({
+			error: 'Please guess again',
+			correctGuess: ''
+		});
 	};
 
 	setCorrectState = () => {

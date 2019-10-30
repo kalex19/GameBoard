@@ -1,6 +1,6 @@
 import React from 'react';
 import CorrectLetter from '../../constants/CorrectLetter/CorrectLetter';
-import Loader from '../../hoc/Loader'
+import LoaderHOC from '../../hoc/Loader';
 
 const CorrectLetterScreen = props => {
 	const chosenWordArray = props.chosenWord.split('');
@@ -10,4 +10,4 @@ const CorrectLetterScreen = props => {
 	});
 };
 
-export default Loader(CorrectLetterScreen);
+export default LoaderHOC(CorrectLetterScreen);
