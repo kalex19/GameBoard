@@ -16,7 +16,7 @@ const BalloonScreen = props => {
 			>
 				Balloons Left
 			</Text>
-			<View style={{ flexDirection: 'row' }}>{balloons}</View>
+			<View style={{ flexDirection: 'row', justifyContent: 'center' }}>{balloons}</View>
 		</View>
 	);
 };

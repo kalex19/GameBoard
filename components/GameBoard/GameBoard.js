@@ -9,13 +9,12 @@ import { Avatar, Badge } from 'react-native-elements';
 import playBalloonPop from '../../constants/BalloonSound/BalloonSound';
 import BalloonScreen from '../BalloonScreen/BalloonScreen';
 import CorrectLetterScreen from '../CorrectLetterScreen/CorrectLetterScreen';
+import ModalText from '../ModalText/ModalText';
 
 export class GameBoard extends Component {
 	state = {
 		words: [],
-		//reduce so only taking in a small number of words at a time
 		chosenWord: '',
-		//set state so already have a split chosen word
 		currentGuess: '',
 		guesses: [],
 		round: 1,
@@ -124,39 +123,30 @@ export class GameBoard extends Component {
 	};
 
 	revealHint = () => {
-		//account for repeats
-		//remove balloon
 		const chosenWordArray = this.state.chosenWord.split('');
-		const unusedLetter = chosenWordArray.find(letter => {
-			return !this.state.guesses.includes(letter);
-		});
-		const removeBalloon = '*';
-		if (this.state.chosenWord.includes(unusedLetter)) {
-			//only one time)
-			this.setState({
-				hintButtonCount: this.state.hintButtonCount + 1,
-				guesses: [...this.state.guesses, unusedLetter, removeBalloon]
-			});
-		} else {
-			chosenWordArray.find(letter => {
+		const unusedLetters = chosenWordArray
+			.map(letter => {
 				return !this.state.guesses.includes(letter);
-				//plus one index - go to next letter
-			});
+			})
+			.sort();
+		const removeBalloon = '*';
+		const letterRevealed = '';
+		for (var i = 0; i <= unusedLetters.length; i++) {
+			if (unusedLetters[i] === unusedLetters[i + 1]) {
+				return (letterRevealed = unusedLetters[i + 2]);
+			}
 		}
+		this.setState({
+			hintButtonCount: this.state.hintButtonCount + 1,
+			guesses: [...this.state.guesses, letterRevealed, removeBalloon],
+			incorrectLetters: this.state.incorrectLetters.push('*')
+		});
+
 		if (this.state.hintButtonCount >= 2) {
 			this.setState({
 				hintButtonVisibility: !hintButtonVisibility
 			});
 		}
-	};
-
-	setWinnerText = () => {
-		//change to component
-		const incorrectLetters = this.getIncorrectLetters();
-		if (incorrectLetters.length === 6) {
-			return <Text style={styles.modalText}>You Lost! 💥</Text>;
-		}
-		return <Text style={styles.modalText}>You Won! 🎉</Text>;
 	};
 
 	resetGame = () => {
@@ -166,30 +156,6 @@ export class GameBoard extends Component {
 			gameOver: false,
 			round: this.state.round + 1
 		});
-	};
-
-	renderButton = () => {
-		//change to component
-		if (this.state.playerScore === 3 || this.state.computerScore === 3) {
-			return (
-				<Button
-					title="End Game"
-					color={theme.secondaryColor}
-					style={styles.buttonText}
-					accessibilityLabel="End the game"
-					onPress={this.navigateHome}
-				/>
-			);
-		}
-		return (
-			<Button
-				title="Play Again"
-				color={theme.secondaryColor}
-				style={styles.buttonText}
-				accessibilityLabel="Play a new game"
-				onPress={this.resetGame}
-			/>
-		);
 	};
 
 	navigateHome = async () => {
@@ -236,7 +202,6 @@ export class GameBoard extends Component {
 				</View>
 				<View style={styles.incorrectLettersContainer}>{lettersToRender}</View>
 				<BalloonScreen lettersLength={lettersLength} />
-				{/* //fix styling */}
 				<Image source={require('../../assets/stickmanninja.png')} />
 				<View style={styles.correctLettersContainer}>
 					<CorrectLetterScreen guesses={this.state.guesses} chosenWord={this.state.chosenWord} />
@@ -254,35 +219,38 @@ export class GameBoard extends Component {
 								value={this.state.currentGuess}
 								maxLength={this.state.chosenWord.length}
 							/>
-							<View style={styles.button}>
-								<Button
-									title="ENTER"
-									color={theme.secondaryColor}
-									style={styles.buttonText}
-									accessibilityLabel="Tap me to submit your guess"
-									onPress={this.handleSubmit}
-								/>
-							</View>
-							<View style={styles.button}>
-								<Button
-									color={theme.secondaryColor}
-									style={styles.buttonText}
-									visible={this.state.hintButtonVisibility}
-									title="Get a Hint"
-									accessibilityLabel="Tap me to get a hint"
-									onPress={this.revealHint}
-								>
-									Get a Hint
-								</Button>
+							<View style={{ flexDirection: 'row' }}>
+								<View style={styles.button}>
+									<Button
+										title="ENTER"
+										color={theme.secondaryColor}
+										style={styles.buttonText}
+										accessibilityLabel="Tap me to submit your guess"
+										onPress={this.handleSubmit}
+									/>
+								</View>
+								<View style={styles.button}>
+									<Button
+										color={theme.secondaryColor}
+										style={styles.buttonText}
+										visible={this.state.hintButtonVisibility}
+										title="HINT"
+										accessibilityLabel="Tap me to get a hint"
+										onPress={this.revealHint}
+									>
+										HINT
+									</Button>
+								</View>
 							</View>
 						</View>
 					)}
 					<View style={styles.modalContainer}>
 						<Modal animationType="fade" transparent={false} visible={this.state.gameOver}>
-							<View>
-								<Text style={{ marginTop: 100, marginLeft: 100 }}>{this.setWinnerText()}</Text>
-								<View style={styles.modalButton}>{this.renderButton()}</View>
-							</View>
+							<ModalText
+								playerScore={this.state.playerScore}
+								computerScore={this.state.computerScore}
+								incorrectLetters={this.state.incorrectLetters}
+							/>
 						</Modal>
 					</View>
 				</View>
