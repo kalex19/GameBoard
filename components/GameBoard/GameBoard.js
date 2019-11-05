@@ -124,25 +124,16 @@ export class GameBoard extends Component {
 	revealHint = () => {
 		let revealedLetter = '';
 		const chosenWordArray = this.state.chosenWord.split('');
-		console.log('chosenWordArray', chosenWordArray);
 		const unguessedLetters = chosenWordArray
 			.filter(letter => {
 				return !this.state.guesses.includes(letter);
 			})
 			.sort();
-		console.log('unguessedletters', unguessedLetters);
-
 		for (let i = 0; i <= unguessedLetters.length; i++) {
 			let currentLetter = unguessedLetters[i];
-			console.log('current letter', currentLetter);
-
 			let letterOccurance = unguessedLetters.filter(letter => letter === currentLetter);
-			console.log('letterOccurance', letterOccurance);
-			console.log('letterOccuranceLength', letterOccurance.length);
 			if (letterOccurance.length <= 1) {
 				revealedLetter = currentLetter;
-				console.log('revealedLetter', revealedLetter);
-
 				this.setState({
 					hintButtonCount: this.state.hintButtonCount + 1,
 					guesses: [...this.state.guesses, revealedLetter]
@@ -156,9 +147,7 @@ export class GameBoard extends Component {
 				});
 			}
 		}
-
 		if (this.state.hintButtonCount >= 2) {
-			console.log('hintButton', this.state.hintButtonCount);
 			this.setState({
 				hintButtonVisibility: !this.state.hintButtonVisibility
 			});
