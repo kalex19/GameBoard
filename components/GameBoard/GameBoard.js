@@ -6,7 +6,6 @@ import { getWords } from '../../utils/getWords';
 import PropTypes from 'prop-types';
 import IncorrectLetter from '../../constants/IncorrectLetter/IncorrectLetter';
 import { Avatar, Badge } from 'react-native-elements';
-import playBalloonPop from '../../constants/BalloonSound/BalloonSound';
 import BalloonScreen from '../BalloonScreen/BalloonScreen';
 import CorrectLetterScreen from '../CorrectLetterScreen/CorrectLetterScreen';
 import ModalText from '../ModalText/ModalText';
@@ -22,8 +21,8 @@ export class GameBoard extends Component {
 		playerScore: 0,
 		gameOver: false,
 		error: '',
-		hintButtonCount: 0,
-		hintButtonVisibility: true
+		hintButtonCount: 1,
+		hintButtonVisibility: false
 	};
 
 	async componentDidMount() {
@@ -123,37 +122,48 @@ export class GameBoard extends Component {
 	};
 
 	revealHint = () => {
+		let revealedLetter = '';
 		const chosenWordArray = this.state.chosenWord.split('');
-		const unusedLetters = chosenWordArray
+		console.log('chosenWordArray', chosenWordArray);
+		const unguessedLetters = chosenWordArray
 			.filter(letter => {
 				return !this.state.guesses.includes(letter);
 			})
 			.sort();
-		const removeBalloon = '*';
-		let letterRevealed = '';
-		for (let i = 0; i <= unusedLetters.length; i++) {
-			if (unusedLetters[i] === unusedLetters[i + 1]) {
-				letterRevealed = unusedLetters[i + 2];
+		console.log('unguessedletters', unguessedLetters);
+
+		for (let i = 0; i <= unguessedLetters.length; i++) {
+			let currentLetter = unguessedLetters[i];
+			console.log('current letter', currentLetter);
+
+			let letterOccurance = unguessedLetters.filter(letter => letter === currentLetter);
+			console.log('letterOccurance', letterOccurance);
+			console.log('letterOccuranceLength', letterOccurance.length);
+			if (letterOccurance.length <= 1) {
+				revealedLetter = currentLetter;
+				console.log('revealedLetter', revealedLetter);
+
+				this.setState({
+					hintButtonCount: this.state.hintButtonCount + 1,
+					guesses: [...this.state.guesses, revealedLetter]
+				});
 				break;
 			}
+			if (letterOccurance.length > 1) {
+				revealedLetter = '';
+				this.setState({
+					error: 'No More Hints'
+				});
+			}
 		}
-		this.setState({
-			hintButtonCount: this.state.hintButtonCount + 1,
-			guesses: [...this.state.guesses, letterRevealed, removeBalloon],
-			incorrectLetters: this.state.incorrectLetters.push('*')
-		});
 
 		if (this.state.hintButtonCount >= 2) {
+			console.log('hintButton', this.state.hintButtonCount);
 			this.setState({
-				hintButtonVisibility: !hintButtonVisibility
+				hintButtonVisibility: !this.state.hintButtonVisibility
 			});
 		}
 	};
-
-	// filter unguessed letters
-	// filter out letters that occur more than once
-	// randomly guess one
-	// push into state.guesses
 
 	resetGame = () => {
 		this.pickWord();
@@ -162,11 +172,6 @@ export class GameBoard extends Component {
 			gameOver: false,
 			round: this.state.round + 1
 		});
-	};
-
-	navigateHome = async () => {
-		await playBalloonPop();
-		this.props.navigation.navigate('Home');
 	};
 
 	render() {
@@ -238,7 +243,7 @@ export class GameBoard extends Component {
 									<Button
 										color={theme.secondaryColor}
 										style={styles.buttonText}
-										visible={this.state.hintButtonVisibility}
+										disabled={this.state.hintButtonVisibility}
 										title="HINT"
 										accessibilityLabel="Tap me to get a hint"
 										onPress={this.revealHint}
@@ -254,7 +259,7 @@ export class GameBoard extends Component {
 							<ModalText
 								playerScore={this.state.playerScore}
 								computerScore={this.state.computerScore}
-								incorrectLetters={this.state.incorrectLetters}
+								incorrectLetters={incorrectLetters}
 							/>
 						</Modal>
 					</View>

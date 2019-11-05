@@ -3,12 +3,12 @@ import theme from '../theme';
 
 export default StyleSheet.create({
 	container: {
-		margin: 10
+		margin: 5
 	},
 	letter: {
 		textAlign: 'center',
 		fontFamily: theme.primaryFont,
 		color: theme.primaryColor,
-		fontSize: 20
+		fontSize: 30
 	}
 });

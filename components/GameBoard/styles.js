@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
-		height: '50%',
+		height: '20%',
 		width: '80%',
 		borderColor: theme.tertiaryColor,
 		borderWidth: 1,
@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
 		color: theme.primaryColor,
 		fontSize: 40,
 		alignSelf: 'center',
-		width: '50%'
+		width: '80%'
 	},
 	modalButton: {
 		backgroundColor: theme.primaryColor,
@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
 		height: '20%',
 		justifyContent: 'center',
 		alignSelf: 'center',
-		width: '60%',
+		width: '80%',
 		marginTop: 50
 	}
 });
