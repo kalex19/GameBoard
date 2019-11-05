@@ -125,15 +125,16 @@ export class GameBoard extends Component {
 	revealHint = () => {
 		const chosenWordArray = this.state.chosenWord.split('');
 		const unusedLetters = chosenWordArray
-			.map(letter => {
+			.filter(letter => {
 				return !this.state.guesses.includes(letter);
 			})
 			.sort();
 		const removeBalloon = '*';
-		const letterRevealed = '';
-		for (var i = 0; i <= unusedLetters.length; i++) {
+		let letterRevealed = '';
+		for (let i = 0; i <= unusedLetters.length; i++) {
 			if (unusedLetters[i] === unusedLetters[i + 1]) {
-				return (letterRevealed = unusedLetters[i + 2]);
+				letterRevealed = unusedLetters[i + 2];
+				break;
 			}
 		}
 		this.setState({
@@ -148,6 +149,11 @@ export class GameBoard extends Component {
 			});
 		}
 	};
+
+	// filter unguessed letters
+	// filter out letters that occur more than once
+	// randomly guess one
+	// push into state.guesses
 
 	resetGame = () => {
 		this.pickWord();
@@ -207,10 +213,9 @@ export class GameBoard extends Component {
 					<CorrectLetterScreen guesses={this.state.guesses} chosenWord={this.state.chosenWord} />
 				</View>
 				<Text style={styles.text}>{this.state.error}</Text>
-				{/* fix styling */}
 				<View style={styles.containerFlex}>
 					{this.state.chosenWord.length > 0 && (
-						<View style={styles.containerFlex}>
+						<View style={{ flexDirection: 'column', alignItems: 'center' }}>
 							<TextInput
 								accessibilityLabel="Type your guess here. A guess is one letter or the whole word"
 								placeholder="What's your guess?"

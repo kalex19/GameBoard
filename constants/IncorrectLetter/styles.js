@@ -9,6 +9,6 @@ export default StyleSheet.create({
 		textAlign: 'center',
 		fontFamily: theme.primaryFont,
 		color: theme.primaryColor,
-		fontSize: 30
+		fontSize: 20
 	}
 });
