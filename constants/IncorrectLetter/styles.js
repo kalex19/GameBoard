@@ -3,7 +3,7 @@ import theme from '../theme';
 
 export default StyleSheet.create({
 	container: {
-		margin: 10
+		margin: 5
 	},
 	letter: {
 		textAlign: 'center',

@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-around',
 		flexDirection: 'row',
-		margin: 20
+		margin: 10
 	},
 	columnContainer: {
 		flex: 1,
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
 		fontFamily: theme.primaryFont,
 		color: theme.primaryColor,
 		fontWeight: '900',
-		fontSize: 20,
+		fontSize: 30,
 		textDecorationLine: 'underline',
 		textDecorationColor: theme.tertiaryColor
 	},
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
-		height: 10,
+		height: '20%',
 		width: '80%',
 		borderColor: theme.tertiaryColor,
 		borderWidth: 1,
@@ -36,9 +36,9 @@ export const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'center',
-		width: '60%',
+		width: '50%',
 		height: '30%',
-		marginLeft: 30,
+		marginLeft: 25,
 		margin: 5
 	},
 	correctLettersContainer: {
@@ -49,14 +49,13 @@ export const styles = StyleSheet.create({
 		height: 20
 	},
 	inputStyle: {
-		width: '55%',
-		height: '60%',
+		width: '80%',
 		backgroundColor: theme.secondaryColor,
 		borderColor: theme.primaryColor,
 		borderWidth: 1,
 		color: theme.primaryColor,
 		fontSize: 20,
-		margin: 5,
+		margin: '2%',
 		flex: 1,
 		paddingLeft: 15,
 		justifyContent: 'center'
@@ -65,13 +64,13 @@ export const styles = StyleSheet.create({
 		backgroundColor: theme.primaryColor,
 		borderRadius: 100,
 		height: '60%',
-		margin: 5,
+		margin: '1%',
 		justifyContent: 'center',
-		width: '30%'
+		width: '40%'
 	},
 	buttonText: {
 		fontFamily: theme.secondaryFont,
-		fontSize: 20,
+		fontSize: 15,
 		alignSelf: 'center'
 	},
 	text: {
@@ -84,7 +83,7 @@ export const styles = StyleSheet.create({
 		color: theme.primaryColor,
 		fontSize: 40,
 		alignSelf: 'center',
-		width: '50%'
+		width: '80%'
 	},
 	modalButton: {
 		backgroundColor: theme.primaryColor,
@@ -92,7 +91,7 @@ export const styles = StyleSheet.create({
 		height: '20%',
 		justifyContent: 'center',
 		alignSelf: 'center',
-		width: '60%',
+		width: '80%',
 		marginTop: 50
 	}
 });

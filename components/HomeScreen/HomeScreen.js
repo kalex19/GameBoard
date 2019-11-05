@@ -2,23 +2,13 @@ import React, { Component } from 'react';
 import { ImageBackground, View } from 'react-native';
 import Button from '../../constants/Button/Button';
 import Header from '../../constants/Header/Header';
-import { Audio } from 'expo-av';
 import { withNavigation } from 'react-navigation';
+import playBalloonPop from '../../constants/BalloonSound/BalloonSound';
 
 class HomeScreen extends Component {
 	navigateToGame = async () => {
-		await this.playBalloonPop();
+		await playBalloonPop();
 		this.props.navigation.navigate('Game');
-	};
-
-	playBalloonPop = async () => {
-		const soundObject = new Audio.Sound();
-		try {
-			await soundObject.loadAsync(require('../../assets/Pop.m4a'));
-			await soundObject.playAsync();
-		} catch (error) {
-			console.log('oops, no sound');
-		}
 	};
 
 	render() {
